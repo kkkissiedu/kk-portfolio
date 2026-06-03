@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kwabena Kissiedu - Structural Engineering | ML & Research | 3D Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="overflow-x-hidden">
+    <div id="cursor-dot"></div>
+    <div id="cursor-outline"></div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 bg-opacity-30 backdrop-blur-md">
+        <div class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-xl sm:text-2xl font-bold">Kwabena Kissiedu</a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="nav-link transition-colors">About</a>
+                <a href="#services" class="nav-link transition-colors">Services</a>
+                <a href="#projects" class="nav-link transition-colors">Projects</a>
+                <a href="#skills" class="nav-link transition-colors">Skills</a>
+                <a href="#youtube" class="nav-link transition-colors">YouTube</a>
+                <a href="#contact" class="nav-link transition-colors">Contact</a>
+                 <button id="theme-toggle" class="transition-colors focus:outline-none cta-link" aria-label="Toggle theme">
+                    <svg id="moon-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    <svg id="sun-icon" class="hidden w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                </button>
+            </nav>
+            <div class="flex items-center">
+                 <a href="#contact" class="hidden md:block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors cta-link ml-6">Get in Touch</a>
+                <button id="mobile-menu-btn" class="md:hidden p-2 cta-link" aria-label="Open menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-secondary shadow-lg md:hidden">
+            <a href="#about" class="block py-3 px-6 hover:bg-tertiary transition-colors">About</a>
+            <a href="#services" class="block py-3 px-6 hover:bg-tertiary transition-colors">Services</a>
+            <a href="#projects" class="block py-3 px-6 hover:bg-tertiary transition-colors">Projects</a>
+            <a href="#skills" class="block py-3 px-6 hover:bg-tertiary transition-colors">Skills</a>
+            <a href="#youtube" class="block py-3 px-6 hover:bg-tertiary transition-colors">YouTube</a>
+            <a href="#contact" class="block py-3 px-6 hover:bg-tertiary transition-colors">Contact</a>
+            <div class="py-3 px-6 border-t border-gray-700">
+                <button id="mobile-theme-toggle" class="transition-colors focus:outline-none cta-link w-full flex items-center">
+                    <span class="mr-2">Toggle Theme</span>
+                    <svg id="mobile-moon-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    <svg id="mobile-sun-icon" class="hidden w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="relative h-screen flex items-center justify-center text-center overflow-hidden">
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-content px-4 sm:px-6">
+            <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold leading-tight mb-4">Engineering the Future with <br> <span class="section-title">Data & Design</span></h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">A First Class Honors Civil Engineer developing AI-driven tools for safer, more sustainable infrastructure through a complete workflow from 3D synthetic data generation to physics-informed modeling.</p>
+            <a href="#projects" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full text-lg transition-transform transform hover:scale-105 cta-link">View My Work</a>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 md:py-32 bg-secondary">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="grid md:grid-cols-3 gap-8 md:gap-12 items-center">
+                <div class="md:col-span-1 animated-element"><img src="images/kk.jpg" onerror="this.onerror=null;this.src='https://placehold.co/600x800/101010/e0e0e0?text=Alex+Doe';" alt="Kwabena Kissiedu" class="rounded-lg shadow-2xl w-full max-w-sm mx-auto h-auto object-cover"></div>
+                <div class="md:col-span-2 animated-element">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">About Me</h2>
+                    <p class="mb-6 text-base md:text-lg">I am a research-focused Civil Engineer passionate about applying cutting-edge AI to solve real-world infrastructure challenges in Ghana. My work integrates Physics-Informed AI, computational mechanics, and design automation into a complete workflow: I create 3D digital worlds, use them to generate synthetic data, and then train the physics-informed models needed for analysis.</p>
+                    <p class="mb-8 text-base md:text-lg">This passion led me to co-found The Anthracite Ltd., a startup with the mission to develop Ghana's first 3D-printed Green Building estate. My ultimate goal is to pioneer a new paradigm where structures are built with and managed by intelligent digital twins throughout their entire lifespan.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <button id="cv-modal-btn" class="w-full sm:w-auto text-center cv-button font-semibold py-3 px-6 rounded-lg transition-colors cta-link">Download CV</button>
+                        <a href="files/Portfolio - Kwabena Kissiedu - structural.pdf" download class="w-full sm:w-auto text-center cv-button font-semibold py-3 px-6 rounded-lg transition-colors cta-link">Download Portfolio</a>
+                        <a href="#contact" class="w-full sm:w-auto text-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors cta-link">Contact Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-20 md:py-32 bg-primary">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 animated-element">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">What I Do</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="service-card animated-element">
+                    <h3 class="text-2xl font-bold mb-4 text-indigo-400">Structural Engineering</h3>
+                    <p class="text-desc mb-4">Applying modern computational tools to traditional structural analysis, including physics-based numerical modeling in ABAQUS and advanced BIM workflows in Autodesk Revit.</p>
+                </div>
+                <div class="service-card animated-element">
+                    <h3 class="text-2xl font-bold mb-4 text-pink-400">ML & Research</h3>
+                    <p class="text-desc mb-4">Developing custom computer vision models (U-Net, YOLOv8) for SHM and site safety, and building Physics-Informed Neural Networks (PINNs) for predictive analysis.</p>
+                </div>
+                <div class="service-card animated-element">
+                    <h3 class="text-2xl font-bold mb-4 text-teal-400">3D Design & Visualization</h3>
+                    <p class="text-desc mb-4">Creating high-fidelity 3D assets and immersive digital environments using Blender, ZBrush, and Unreal Engine for synthetic data generation and virtual reality experiences.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-20 md:py-32 bg-secondary">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 animated-element"><h2 class="text-3xl md:text-4xl font-bold mb-4">My Portfolio</h2><p class="max-w-2xl mx-auto text-base md:text-lg">A selection of projects that demonstrate my skills across different domains.</p></div>
+
+            <div class="mb-16">
+                <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 section-title animated-element">Featured Projects</h3>
+                <div id="featured-projects-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="project-card bg-tertiary rounded-lg overflow-hidden cursor-pointer animated-element" data-modal-target="modal-5">
+                        <div class="relative overflow-hidden h-64 md:h-80">
+                            <img src="images/projects/ML/ccseg_main.webp" alt="Concrete Crack Segmentation Model" class="card-image w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Concrete Crack Segmentation</h3>
+                            <p class="text-desc mb-4 text-sm">A U-Net model with a 93% Dice Score for detecting concrete cracks, enhanced with attention mechanisms.</p>
+                            <span class="text-xs font-semibold capitalize text-pink-400">ML & Research</span>
+                        </div>
+                    </div>
+                    <div class="project-card bg-tertiary rounded-lg overflow-hidden cursor-pointer animated-element" data-modal-target="modal-20">
+                        <div class="relative overflow-hidden h-64 md:h-80">
+                            <img src="images/projects/3D/360africa_main.webp" alt="Experience Africa Project" class="card-image w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Experience Africa: Ashanti Empire</h3>
+                            <p class="text-desc mb-4 text-sm">Lead 3D Designer for a project focused on recreating historic scenes from the Ashanti Empire in VR using Unreal Engine and Unity.</p>
+                            <span class="text-xs font-semibold capitalize text-teal-400">3D Design</span>
+                        </div>
+                    </div>
+                    <div class="project-card bg-tertiary rounded-lg overflow-hidden cursor-pointer animated-element" data-modal-target="modal-4">
+                        <div class="relative overflow-hidden h-64">
+                            <img src="images/projects/Structural/zenkawa_main.webp" alt="Zenkawa Hospital" class="card-image w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2">Zenkawa Hospital</h3>
+                            <p class="text-desc mb-4 text-sm">Structural analysis and design for a 7-storey hospital building in Accra.</p>
+                            <span class="text-xs font-semibold capitalize text-indigo-400">Structural Engineering</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-8 section-title animated-element">Other Projects</h3>
+            
+            <h4 class="text-lg font-semibold text-center mb-4 animated-element">Click a category to filter projects:</h4>
+            
+            <div class="flex flex-wrap justify-center gap-2 mb-12 animated-element" id="filter-container">
+                <button class="filter-btn active py-2 px-4 rounded-lg font-semibold transition-colors cta-link" data-filter="all">All</button>
+                <button class="filter-btn py-2 px-4 rounded-lg font-semibold transition-colors" data-filter="engineering">Structural Engineering</button>
+                <button class="filter-btn py-2 px-4 rounded-lg font-semibold transition-colors" data-filter="ml-research">ML & Research</button>
+                <button class="filter-btn py-2 px-4 rounded-lg font-semibold transition-colors" data-filter="design">3D Design</button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="project-grid"></div>
+        </div>
+    </section>
+    
+    <section id="skills" class="py-20 md:py-32 bg-primary">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16 animated-element"><h2 class="text-3xl md:text-4xl font-bold mb-4">My Toolkit</h2><p class="max-w-2xl mx-auto text-base md:text-lg">The primary tools and technologies I use to bring ideas to life.</p></div>
+            <div class="space-y-16">
+                 <div>
+                    <h3 class="text-2xl font-bold mb-6 text-center text-indigo-400 animated-element">Structural Engineering</h3>
+                    <div class="bento-grid">
+                        <!-- Note: The inline style for grid spanning is a modern and acceptable use case. -->
+                        <div class="bento-item animated-element flex-col space-y-4" style="--col: 2; --row: 1;"><img src="images/logos/prota.png" alt="Prota Logo" class="bento-icon" id="icon-prota" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">ProtaStructure</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/abaqus.png" alt="Abaqus Logo" class="bento-icon" id="icon-abaqus" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">ABAQUS</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/revit.png" alt="Revit Logo" class="bento-icon" id="icon-revit" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Revit</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/autocad.png" alt="AutoCAD Logo" class="bento-icon" id="icon-autocad" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">AutoCAD</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/midas.png" alt="Midas Logo" class="bento-icon" id="icon-midas" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Midas</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/tekla.png" alt="Tekla Logo" class="bento-icon" id="icon-tekla" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Tekla Structures</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/etabs.png" alt="ETABS Logo" class="bento-icon" id="icon-etabs" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">ETABS</h3></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-center text-pink-400 animated-element">ML & Research</h3>
+                    <div class="bento-grid">
+                        <div class="bento-item animated-element flex-col space-y-4" style="--col: 2; --row: 2;"><img src="images/logos/python.png" alt="Python Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-2xl font-bold">Python</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/pytorch.png" alt="PyTorch Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">PyTorch</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/tensorflow.png" alt="TensorFlow Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">TensorFlow</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/keras.png" alt="Keras Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Keras</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/opencv.png" alt="OpenCV Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">OpenCV</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/albumentations.png" alt="Albumentations Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Albumentations</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/sql.png" alt="SQL Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">SQL</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/seaborn.png" alt="Seaborn Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Seaborn</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/numpy.png" alt="Numpy Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Numpy</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/pandas.png" alt="Pandas Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Pandas</h3></div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-center text-teal-400 animated-element">3D Design & Visualization</h3>
+                    <div class="bento-grid">
+                        <div class="bento-item animated-element flex-col space-y-4" style="--col: 2; --row: 1;"><img src="images/logos/unreal.png" alt="Unreal Engine Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Unreal Engine 5</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/unity.png" alt="Unity" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Unity</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/blender.png" alt="Blender Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Blender</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/zbrush.png" alt="ZBrush Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">ZBrush</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/substance.png" alt="Substance Painter Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Substance Painter</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/marmoset.png" alt="Marmoset Toolbag Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Marmoset Toolbag</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/photoshop.png" alt="Photoshop Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Photoshop</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/illustrator.png" alt="Illustrator Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Illustrator</h3></div>
+                        <div class="bento-item animated-element flex-col space-y-4"><img src="images/logos/premier.png" alt="Premier Pro Logo" class="bento-icon" onerror="this.style.display='none'"><h3 class="text-xl font-semibold">Premiere Pro</h3></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="youtube" class="py-20 md:py-32 bg-secondary">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 animated-element">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">From the Channel</h2>
+                <p class="max-w-2xl mx-auto text-base md:text-lg">Tutorials, project showcases, and insights into the world of engineering and AI.</p>
+            </div>
+            <div class="max-w-4xl mx-auto animated-element">
+                <div class="youtube-container mb-8">
+                    <iframe class="youtube-iframe" src="https://www.youtube.com/embed/GREgRXG-fbo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="text-center">
+                    <a href="http://www.youtube.com/@kkkissiedu" target="_blank" rel="noopener noreferrer" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full text-lg transition-transform transform hover:scale-105 cta-link inline-flex items-center">
+                        <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg>
+                        Visit My Channel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="py-20 md:py-32 bg-primary">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 animated-element">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Testimonials</h2>
+                <p class="max-w-2xl mx-auto text-base md:text-lg">What colleagues and clients say about my work.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="testimonial-card animated-element">
+                    <p class="text-lg italic mb-4">"Kwabena's ability to merge deep engineering principles with modern AI is remarkable. His work on our project was pivotal."</p>
+                    <p class="font-bold">- Dr. Evans Amponsah</p>
+                    <p class="text-sm">Research Supervisor, KNUST</p>
+                </div>
+                <div class="testimonial-card animated-element">
+                    <p class="text-lg italic mb-4">"The 3D visualizations Kwabena produced were beyond our expectations. He is professional, creative, and delivers exceptional quality."</p>
+                    <p class="font-bold">- Selasie Awity</p>
+                    <p class="text-sm">CE0, Dobiison VR Ghana Ltd.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 md:py-32 bg-secondary">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 animated-element"><h2 class="text-3xl md:text-4xl font-bold mb-4">Let's Connect</h2><p class="max-w-2xl mx-auto text-base md:text-lg">Have a project in mind or just want to say hi? Feel free to reach out.</p></div>
+            <div class="max-w-3xl mx-auto animated-element">
+                <form action="https://formspree.io/f/xldlbvyb" method="POST" class="bg-tertiary p-6 sm:p-8 rounded-lg shadow-lg">
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <input type="text" name="name" placeholder="Your Name" required class="w-full text-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 cta-link">
+                        <input type="email" name="email" placeholder="Your Email" required class="w-full text-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 cta-link">
+                    </div>
+                    <textarea name="message" placeholder="Your Message" rows="6" required class="w-full text-white p-3 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-indigo-500 cta-link"></textarea>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors cta-link">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-8 bg-primary">
+        <div class="container mx-auto px-4 sm:px-6 text-center">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="https://github.com/kkkissiedu" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="View GitHub profile">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd" /></svg>
+                </a>
+                </div>
+            <p class="text-sm">&copy; 2025 Kwabena Kissiedu. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <div id="modals-container"></div>
+
+    <div id="cv-modal" class="modal fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 opacity-0 invisible z-[101]">
+        <div class="modal-content bg-tertiary rounded-lg max-w-sm w-full p-8 relative transform scale-95 text-center">
+            <button class="modal-close absolute top-4 right-4 hover:text-white text-3xl font-light cta-link">&times;</button>
+            <h2 class="text-2xl font-bold mb-6">Download CV</h2>
+            <div class="flex flex-col space-y-4">
+                <a href="files/CV - Kwabena Kissiedu - Academic.pdf" download class="w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors cta-link">Academic CV</a>
+                <a href="files/CV - Kwabena Kissiedu - Professional.pdf" download class="w-full text-center cv-button font-semibold py-3 px-6 rounded-lg transition-colors cta-link">Professional CV</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 opacity-0 invisible z-[102]">
+        <img id="lightbox-img" src="" alt="Expanded project image" class="max-w-full max-h-full object-contain">
+        <button id="lightbox-close" class="absolute top-6 right-8 text-white text-5xl font-light cta-link">&times;</button>
+        <button id="lightbox-prev" class="absolute top-1/2 left-4 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full leading-none text-3xl cta-link">&lt;</button>
+        <button id="lightbox-next" class="absolute top-1/2 right-4 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full leading-none text-3xl cta-link">&gt;</button>
+    </div>
+
+    <a href="#" id="back-to-top" class="fixed bottom-8 right-8 bg-indigo-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-opacity opacity-0 cta-link" aria-label="Back to top">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+    </a>
+
+    <script src="js/projects-data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
+

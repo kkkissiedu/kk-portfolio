@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand colors */
+  --color-anthracite: #0d0d0d;
+  --color-gold: #c9952a;
+  --color-gold-highlight: #d4af37;
+  --color-gold-dark: #8b6914;
+  --color-gold-heading: #a07820;
+  --color-cream: #f5f0e8;
+  --color-dark-text: #1a1a1a;
+
+  /* Typography */
+  --font-heading: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-body: var(--font-inter), "Inter", system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background-color: #0d0d0d;
+  color: #f5f0e8;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+/* Custom scrollbar — WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0D0D0D;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C9952A;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
+/* Custom scrollbar — Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #C9952A #0D0D0D;
+}
+
+/* Gold gradient line animation */
+@keyframes gold-line-sweep {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.gold-gradient-line {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #c9952a 20%,
+    #d4af37 40%,
+    #f5e07a 50%,
+    #d4af37 60%,
+    #c9952a 80%,
+    transparent 100%
+  );
+  background-size: 100% 100%;
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-gsap],
+  [data-hero] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Selection */
+::selection {
+  background-color: #c9952a;
+  color: #0d0d0d;
+}
+
+/* Decorative section numbers — content via ::before so screen readers skip them */
+.section-number {
+  position: absolute;
+  top: 0;
+  right: 0;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+  opacity: 0.04;
+}
+
+.section-number::before {
+  content: attr(data-number);
+  font-family: var(--font-heading);
+  font-size: 180px;
+  font-weight: 700;
+  color: #c9952a;
+  line-height: 1;
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .section-number::before {
+    display: none;
+  }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .slide-enter {
+    animation: slideEnter 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  @keyframes slideEnter {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.99);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
