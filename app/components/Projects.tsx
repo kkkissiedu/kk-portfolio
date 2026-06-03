@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const CATEGORY_LABELS: Record<string, string> = {
   "structural-engineering": "Structural Engineering",
-  "ml-research": "ML & Research",
+  "ml-research": "ML, Robotics & Research",
   "3d-design": "3D Design",
 };
 

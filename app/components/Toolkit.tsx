@@ -54,7 +54,7 @@ export default function Toolkit({
   toolkitIntro = "The primary tools and technologies I use to bring ideas to life.",
   column1Title = "Structural Engineering",
   column1Items = [],
-  column2Title = "ML & Research",
+  column2Title = "ML, Robotics & Research",
   column2Items = [],
   column3Title = "3D Design",
   column3Items = [],

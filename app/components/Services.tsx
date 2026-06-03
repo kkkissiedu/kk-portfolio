@@ -22,6 +22,8 @@ type ServicesProps = {
   card3Title?: string;
   card3Subtitle?: string | null;
   card3Description?: string;
+  anthraciteStructuralUrl?: string;
+  anthracite3dUrl?: string;
 };
 
 function MLIcon() {
@@ -58,17 +60,14 @@ function ThreeDIcon() {
   );
 }
 
-const SERVICE_HREFS: Record<ServiceId, string> = {
-  "ml-research": "/work/ml-research",
-  "structural-engineering": "/work/structural-engineering",
-  "3d-design": "/work/3d-design",
-};
+const DEFAULT_STRUCTURAL_URL = "https://anthracite-website.vercel.app/work/architectural-structural";
+const DEFAULT_3D_URL = "https://anthracite-website.vercel.app/work/sculptor";
 
 export default function Services({
   whatIDoLabel = "What I Do",
   whatIDoHeading = "Three disciplines, one workflow",
   whatIDoAccentWord = "workflow",
-  card1Title = "ML & Research",
+  card1Title = "ML, Robotics & Research",
   card1Subtitle = null,
   card1Description = "Developing custom computer vision models (U-Net, YOLOv8) for SHM and site safety, and building Physics-Informed Neural Networks (PINNs) for predictive analysis.",
   card2Title = "Structural Engineering",
@@ -77,6 +76,8 @@ export default function Services({
   card3Title = "3D Design",
   card3Subtitle = null,
   card3Description = "Creating high-fidelity 3D assets and immersive digital environments using Blender, ZBrush, and Unreal Engine for synthetic data generation and virtual reality experiences.",
+  anthraciteStructuralUrl,
+  anthracite3dUrl,
 }: ServicesProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -97,6 +98,8 @@ export default function Services({
       title: card1Title,
       subtitle: card1Subtitle ?? null,
       description: card1Description,
+      href: "/work/ml-research",
+      isExternal: false,
     },
     {
       id: "structural-engineering" as ServiceId,
@@ -104,6 +107,8 @@ export default function Services({
       title: card2Title,
       subtitle: card2Subtitle ?? null,
       description: card2Description,
+      href: anthraciteStructuralUrl ?? DEFAULT_STRUCTURAL_URL,
+      isExternal: true,
     },
     {
       id: "3d-design" as ServiceId,
@@ -111,6 +116,8 @@ export default function Services({
       title: card3Title,
       subtitle: card3Subtitle ?? null,
       description: card3Description,
+      href: anthracite3dUrl ?? DEFAULT_3D_URL,
+      isExternal: true,
     },
   ];
 
@@ -219,7 +226,8 @@ export default function Services({
               >
                 <ServiceCard
                   service={service}
-                  href={SERVICE_HREFS[service.id]}
+                  href={service.href}
+                  isExternal={service.isExternal}
                   ref={(el) => {
                     cardRefs.current[i] = el;
                   }}
@@ -262,7 +270,8 @@ export default function Services({
             <ServiceCard
               key={service.id}
               service={service}
-              href={SERVICE_HREFS[service.id]}
+              href={service.href}
+              isExternal={service.isExternal}
               ref={(el) => {
                 cardRefs.current[i] = el;
               }}
@@ -280,12 +289,14 @@ type ServiceItem = {
   title: string;
   subtitle: string | null;
   description: string;
+  href: string;
+  isExternal: boolean;
 };
 
 const ServiceCard = forwardRef<
   HTMLDivElement,
-  { service: ServiceItem; href: string }
->(({ service, href }, ref) => {
+  { service: ServiceItem; href: string; isExternal?: boolean }
+>(({ service, href, isExternal }, ref) => {
   const { Icon, title, subtitle, description } = service;
 
   return (
@@ -323,21 +334,41 @@ const ServiceCard = forwardRef<
         {description}
       </p>
 
-      <Link
-        href={href}
-        className="
-          mt-2 flex items-center justify-center gap-3
-          border-2 border-gold bg-gold/5
-          hover:bg-gold hover:text-white
-          text-gold font-semibold
-          px-6 py-4 text-sm tracking-[0.2em] uppercase
-          transition-colors duration-300
-          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold
-        "
-        aria-label={`Explore ${title}`}
-      >
-        EXPLORE PROJECTS →
-      </Link>
+      {isExternal ? (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="
+            mt-2 flex items-center justify-center gap-3
+            border-2 border-gold bg-gold/5
+            hover:bg-gold hover:text-white
+            text-gold font-semibold
+            px-6 py-4 text-sm tracking-[0.2em] uppercase
+            transition-colors duration-300
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold
+          "
+          aria-label={`Explore ${title}`}
+        >
+          EXPLORE PROJECTS →
+        </a>
+      ) : (
+        <Link
+          href={href}
+          className="
+            mt-2 flex items-center justify-center gap-3
+            border-2 border-gold bg-gold/5
+            hover:bg-gold hover:text-white
+            text-gold font-semibold
+            px-6 py-4 text-sm tracking-[0.2em] uppercase
+            transition-colors duration-300
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold
+          "
+          aria-label={`Explore ${title}`}
+        >
+          EXPLORE PROJECTS →
+        </Link>
+      )}
 
       <div
         className="h-px bg-gold scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"

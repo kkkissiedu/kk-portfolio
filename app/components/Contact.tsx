@@ -192,7 +192,7 @@ export default function Contact({
           {/* Left — company info */}
           <div className="flex flex-col gap-10">
             <div>
-              <p className="text-cream/50 text-sm leading-relaxed max-w-sm">
+              <p className="text-white/80 text-sm leading-relaxed max-w-sm">
                 {contactSubtext}
               </p>
             </div>
@@ -237,7 +237,7 @@ export default function Contact({
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="text-cream/40 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold rounded-sm"
+                    className="text-white/70 hover:text-gold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold rounded-sm"
                   >
                     {icon}
                   </a>
@@ -254,7 +254,7 @@ export default function Contact({
                 <h3 className="text-cream text-2xl">
                   Message Received
                 </h3>
-                <p className="text-cream/50 text-sm">
+                <p className="text-white/80 text-sm">
                   Thank you for reaching out. We&apos;ll be in touch shortly.
                 </p>
                 <button
@@ -280,7 +280,7 @@ export default function Contact({
                   <div>
                     <label
                       htmlFor="name"
-                      className="block text-cream/50 text-xs tracking-widest uppercase mb-2"
+                      className="block text-white/80 text-xs tracking-widest uppercase mb-2"
                     >
                       Name
                     </label>
@@ -298,7 +298,7 @@ export default function Contact({
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-cream/50 text-xs tracking-widest uppercase mb-2"
+                      className="block text-white/80 text-xs tracking-widest uppercase mb-2"
                     >
                       Email
                     </label>
@@ -318,7 +318,7 @@ export default function Contact({
                 <div>
                   <label
                     htmlFor="subject"
-                    className="block text-cream/50 text-xs tracking-widest uppercase mb-2"
+                    className="block text-white/80 text-xs tracking-widest uppercase mb-2"
                   >
                     Subject
                   </label>
@@ -337,7 +337,7 @@ export default function Contact({
                 <div>
                   <label
                     htmlFor="message"
-                    className="block text-cream/50 text-xs tracking-widest uppercase mb-2"
+                    className="block text-white/80 text-xs tracking-widest uppercase mb-2"
                   >
                     Message
                   </label>

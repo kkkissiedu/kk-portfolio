@@ -74,6 +74,8 @@ export default async function Home() {
           card3Title={settings?.card3Title}
           card3Subtitle={settings?.card3Subtitle}
           card3Description={settings?.card3Description}
+          anthraciteStructuralUrl={settings?.anthraciteStructuralUrl}
+          anthracite3dUrl={settings?.anthracite3dUrl}
         />
 
         {/* 4. Featured Projects */}

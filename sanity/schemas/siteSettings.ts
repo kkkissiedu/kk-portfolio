@@ -81,7 +81,7 @@ export default defineType({
     defineField({ name: "whatIDoLabel", title: "Label", type: "string", group: "whatIDo", initialValue: "What I Do" }),
     defineField({ name: "whatIDoHeading", title: "Heading", type: "string", group: "whatIDo", initialValue: "Three disciplines, one workflow" }),
     defineField({ name: "whatIDoAccentWord", title: "Heading Accent Word", type: "string", group: "whatIDo", initialValue: "workflow" }),
-    defineField({ name: "card1Title", title: "Card 1 Title", type: "string", group: "whatIDo", initialValue: "ML & Research" }),
+    defineField({ name: "card1Title", title: "Card 1 Title", type: "string", group: "whatIDo", initialValue: "ML, Robotics & Research" }),
     defineField({ name: "card1Subtitle", title: "Card 1 Subtitle", type: "string", group: "whatIDo" }),
     defineField({ name: "card1Description", title: "Card 1 Description", type: "text", rows: 3, group: "whatIDo", initialValue: "Developing custom computer vision models (U-Net, YOLOv8) for SHM and site safety, and building Physics-Informed Neural Networks (PINNs) for predictive analysis." }),
     defineField({ name: "card2Title", title: "Card 2 Title", type: "string", group: "whatIDo", initialValue: "Structural Engineering" }),
@@ -107,7 +107,7 @@ export default defineType({
     defineField({ name: "toolkitIntro", title: "Intro", type: "text", rows: 2, group: "toolkit", initialValue: "The primary tools and technologies I use to bring ideas to life." }),
     defineField({ name: "toolkitColumn1Title", title: "Column 1 Title", type: "string", group: "toolkit", initialValue: "Structural Engineering" }),
     defineField({ name: "toolkitColumn1Items", title: "Column 1 Items", type: "array", group: "toolkit", of: [toolkitItem as any] }),
-    defineField({ name: "toolkitColumn2Title", title: "Column 2 Title", type: "string", group: "toolkit", initialValue: "ML & Research" }),
+    defineField({ name: "toolkitColumn2Title", title: "Column 2 Title", type: "string", group: "toolkit", initialValue: "ML, Robotics & Research" }),
     defineField({ name: "toolkitColumn2Items", title: "Column 2 Items", type: "array", group: "toolkit", of: [toolkitItem as any] }),
     defineField({ name: "toolkitColumn3Title", title: "Column 3 Title", type: "string", group: "toolkit", initialValue: "3D Design" }),
     defineField({ name: "toolkitColumn3Items", title: "Column 3 Items", type: "array", group: "toolkit", of: [toolkitItem as any] }),
@@ -127,6 +127,10 @@ export default defineType({
     defineField({ name: "footerCopyright", title: "Copyright", type: "string", group: "footer", initialValue: "© 2026 Kwabena Kissiedu. All Rights Reserved." }),
     defineField({ name: "footerTagline", title: "Tagline", type: "string", group: "footer", initialValue: "Kumasi, Ghana" }),
 
+    // ─── External discipline URLs ─────────────────────────────────────────
+    defineField({ name: "anthraciteStructuralUrl", title: "Structural Engineering — External URL", type: "string", group: "pages", initialValue: "https://anthracite-website.vercel.app/work/architectural-structural" }),
+    defineField({ name: "anthracite3dUrl", title: "3D Design — External URL", type: "string", group: "pages", initialValue: "https://anthracite-website.vercel.app/work/sculptor" }),
+
     // ─── Sub-page heroes ─────────────────────────────────────────────────
     defineField({
       name: "pages",
@@ -145,7 +149,7 @@ export default defineType({
         },
         {
           name: "ml",
-          title: "ML & Research",
+          title: "ML, Robotics & Research",
           type: "object",
           fields: [
             { name: "heroHeading", type: "string", title: "Heading" },

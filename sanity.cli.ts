@@ -7,4 +7,7 @@ export default defineCliConfig({
     projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "jv5ghckv",
     dataset: "production",
   },
+  deployment: {
+    appId: "n24e80dvdtir6rvczst15xik",
+  },
 });

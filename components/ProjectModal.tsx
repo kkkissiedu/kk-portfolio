@@ -60,7 +60,7 @@ const TAB_LABELS: Record<TabId, string> = {
 
 const CATEGORY_LABELS: Record<string, string> = {
   "structural-engineering": "Structural Engineering",
-  "ml-research": "ML & Research",
+  "ml-research": "ML, Robotics & Research",
   "3d-design": "3D Design",
 };
 
@@ -539,7 +539,7 @@ export default function ProjectModal() {
             </div>
           )}
 
-          {/* ── GitHub button (ML & Research only) ── */}
+          {/* ── GitHub button (ML, Robotics & Research only) ── */}
           {activeProject.githubUrl && activeProject.category === "ml-research" && (
             <div className="shrink-0 px-6 py-3 border-b border-white/10 flex">
               <a

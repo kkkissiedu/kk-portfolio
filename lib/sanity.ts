@@ -111,6 +111,9 @@ export type SiteSettings = {
   // Footer
   footerCopyright?: string;
   footerTagline?: string;
+  // External discipline URLs
+  anthraciteStructuralUrl?: string;
+  anthracite3dUrl?: string;
   // Sub-pages
   pages?: {
     structural?: { heroHeading?: string; heroSubtitle?: string };
@@ -135,6 +138,8 @@ const toolkitItemProjection = `{
 
 export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
   ...,
+  anthraciteStructuralUrl,
+  anthracite3dUrl,
   aboutPhoto ${imgProjection},
   academicCv ${fileProjection},
   professionalCv ${fileProjection},

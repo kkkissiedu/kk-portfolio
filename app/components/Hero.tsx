@@ -133,7 +133,7 @@ export default function Hero({
                 }}
                 data-gsap="true"
                 className={`inline-block ${
-                  i === goldIndex ? "text-gold" : "text-cream/90"
+                  i === goldIndex ? "text-gold" : "text-white"
                 }`}
                 style={{ willChange: "transform, opacity" }}
               >
@@ -147,7 +147,7 @@ export default function Hero({
         <p
           ref={subRef}
           data-gsap="true"
-          className="text-cream/60 text-base md:text-lg lg:text-xl max-w-[600px] mx-auto text-center leading-relaxed mt-6 mb-10 font-body"
+          className="text-white text-base md:text-lg lg:text-xl max-w-[600px] mx-auto text-center leading-relaxed mt-6 mb-10 font-body"
         >
           {heroSubtitle}
         </p>
