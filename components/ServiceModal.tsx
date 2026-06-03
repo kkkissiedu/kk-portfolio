@@ -26,7 +26,7 @@ type ServiceData = {
 };
 
 export default function ServiceModal({
-  card1Title = "ML & Research",
+  card1Title = "ML, Robotics & Research",
   card1Subtitle = null,
   card1Description = "Developing custom computer vision models (U-Net, YOLOv8) for SHM and site safety, and building Physics-Informed Neural Networks (PINNs) for predictive analysis.",
   card2Title = "Structural Engineering",
@@ -41,7 +41,7 @@ export default function ServiceModal({
       heading: card1Title,
       subtitle: card1Subtitle,
       description: card1Description,
-      ctaLabel: "Explore ML & Research →",
+      ctaLabel: "Explore ML, Robotics & Research →",
       ctaHref: "/work/ml-research",
     },
     "structural-engineering": {

@@ -22,14 +22,9 @@ export default defineType({
       name: "category",
       title: "Category",
       type: "string",
-      options: {
-        list: [
-          { title: "Structural Engineering", value: "structural-engineering" },
-          { title: "ML & Research", value: "ml-research" },
-          { title: "3D Design", value: "3d-design" },
-        ],
-        layout: "radio",
-      },
+      hidden: true,
+      readOnly: true,
+      initialValue: "ml-research",
       validation: (r) => r.required(),
     }),
     defineField({
