@@ -6,78 +6,57 @@ import gsap from "gsap";
 import { useServiceModal, type ServiceId } from "@/context/ServiceModalContext";
 
 type ServiceModalProps = {
-  serviceOneTitle?: string;
-  serviceOneModalDescription?: string;
-  serviceOneServices?: string[];
-  serviceTwoTitle?: string;
-  serviceTwoModalDescription?: string;
-  serviceTwoServices?: string[];
-  serviceThreeTitle?: string;
-  serviceThreeModalDescription?: string;
-  serviceThreeServices?: string[];
+  card1Title?: string;
+  card1Subtitle?: string | null;
+  card1Description?: string;
+  card2Title?: string;
+  card2Subtitle?: string | null;
+  card2Description?: string;
+  card3Title?: string;
+  card3Subtitle?: string | null;
+  card3Description?: string;
 };
 
 type ServiceData = {
   heading: string;
+  subtitle: string | null;
   description: string;
-  services: string[];
   ctaLabel: string;
   ctaHref: string;
 };
 
 export default function ServiceModal({
-  serviceOneTitle = "Architectural & Structural Design",
-  serviceOneModalDescription = "From concept to construction documentation, we deliver precision-engineered designs informed by physics-based simulations, computational methods, and real-world performance targets. Our workflow integrates structural analysis in ABAQUS and ProtaStructure with BIM documentation in Autodesk Revit and AutoCAD.",
-  serviceOneServices = [
-    "Structural Analysis & Design",
-    "BIM Documentation",
-    "Construction Drawings",
-    "Seismic & Load Analysis",
-    "Foundation Design",
-    "Structural Detailing",
-  ],
-  serviceTwoTitle = "The Sculptor — 3D Design Services",
-  serviceTwoModalDescription = "High-fidelity 3D modelling, digital twins, and parametric design through our sister studio. We bridge the gap between virtual model and physical structure, producing assets for visualisation, construction simulation, and additive manufacturing workflows.",
-  serviceTwoServices = [
-    "3D Modelling & Visualisation",
-    "Digital Twins",
-    "Parametric Design",
-    "Synthetic Data Generation",
-    "VR/AR Experiences",
-    "3D Printing Preparation",
-  ],
-  serviceThreeTitle = "Real Estate & Construction",
-  serviceThreeModalDescription = "End-to-end real estate development and construction management, anchored by our flagship 3D-printed Green Building estate. We manage projects from site acquisition through to handover, built for durability, sustainability, and scale across Ghana and West Africa.",
-  serviceThreeServices = [
-    "Real Estate Development",
-    "Construction Management",
-    "Green Building Design",
-    "3D-Printed Construction",
-    "Project Management",
-    "Sustainability Consulting",
-  ],
+  card1Title = "ML & Research",
+  card1Subtitle = null,
+  card1Description = "Developing custom computer vision models (U-Net, YOLOv8) for SHM and site safety, and building Physics-Informed Neural Networks (PINNs) for predictive analysis.",
+  card2Title = "Structural Engineering",
+  card2Subtitle = null,
+  card2Description = "Applying modern computational tools to traditional structural analysis, including physics-based numerical modeling in ABAQUS and advanced BIM workflows in Autodesk Revit.",
+  card3Title = "3D Design",
+  card3Subtitle = null,
+  card3Description = "Creating high-fidelity 3D assets and immersive digital environments using Blender, ZBrush, and Unreal Engine for synthetic data generation and virtual reality experiences.",
 }: ServiceModalProps) {
   const SERVICE_CONTENT: Record<ServiceId, ServiceData> = {
-    "architectural-structural": {
-      heading: serviceOneTitle,
-      description: serviceOneModalDescription,
-      services: serviceOneServices,
-      ctaLabel: "View Our Structural Projects →",
-      ctaHref: "/work/architectural-structural",
+    "ml-research": {
+      heading: card1Title,
+      subtitle: card1Subtitle,
+      description: card1Description,
+      ctaLabel: "Explore ML & Research →",
+      ctaHref: "/work/ml-research",
     },
-    sculptor: {
-      heading: serviceTwoTitle,
-      description: serviceTwoModalDescription,
-      services: serviceTwoServices,
-      ctaLabel: "View 3D Design Work →",
-      ctaHref: "/work/sculptor",
+    "structural-engineering": {
+      heading: card2Title,
+      subtitle: card2Subtitle,
+      description: card2Description,
+      ctaLabel: "Explore Structural Engineering →",
+      ctaHref: "/work/structural-engineering",
     },
-    "real-estate": {
-      heading: serviceThreeTitle,
-      description: serviceThreeModalDescription,
-      services: serviceThreeServices,
-      ctaLabel: "Explore Real Estate Services →",
-      ctaHref: "/services/real-estate",
+    "3d-design": {
+      heading: card3Title,
+      subtitle: card3Subtitle,
+      description: card3Description,
+      ctaLabel: "Explore 3D Design →",
+      ctaHref: "/work/3d-design",
     },
   };
 
@@ -152,20 +131,17 @@ export default function ServiceModal({
       aria-modal="true"
       aria-label={content.heading}
     >
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-none" />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-none" />
 
-      {/* Panel */}
       <div
         ref={panelRef}
-        className="relative w-full max-w-2xl bg-anthracite/95 backdrop-blur-sm border border-cream/10 p-8 md:p-10 max-h-[90vh] overflow-y-auto"
+        className="relative w-full max-w-2xl bg-white border border-dark-text/10 shadow-2xl p-8 md:p-10 max-h-[90vh] overflow-y-auto"
         style={{ opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
         <button
           onClick={handleClose}
-          className="absolute top-5 right-5 text-cream/40 hover:text-gold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold rounded-sm p-1"
+          className="absolute top-5 right-5 text-dark-text/40 hover:text-gold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold rounded-sm p-1"
           aria-label="Close"
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
@@ -178,42 +154,25 @@ export default function ServiceModal({
           </svg>
         </button>
 
-        {/* Heading */}
-        <h2 className="text-2xl sm:text-3xl font-bold text-cream mb-6 leading-tight pr-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-dark-text mb-2 leading-tight pr-8">
           {content.heading}
         </h2>
+        {content.subtitle && (
+          <p className="text-gold text-xs tracking-widest uppercase mb-6">
+            {content.subtitle}
+          </p>
+        )}
 
-        {/* Gold divider */}
         <div className="h-px w-12 bg-gold mb-6" />
 
-        {/* Description */}
-        <p className="text-cream/70 text-sm leading-relaxed mb-8">
+        <p className="text-dark-text/70 text-sm leading-relaxed mb-8">
           {content.description}
         </p>
 
-        {/* Services list */}
-        <div className="mb-8">
-          <p className="text-gold text-xs tracking-[0.25em] uppercase mb-4">
-            Services
-          </p>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {content.services.map((s) => (
-              <li
-                key={s}
-                className="flex items-center gap-2 text-cream/60 text-sm"
-              >
-                <span className="w-1 h-1 rounded-full bg-gold flex-shrink-0" />
-                {s}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* CTA */}
         <Link
           href={content.ctaHref}
           onClick={handleClose}
-          className="inline-block border border-gold text-gold px-6 py-3 text-xs tracking-widest uppercase transition-all duration-300 hover:bg-gold hover:text-anthracite focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold rounded-sm"
+          className="inline-block border border-gold text-gold px-6 py-3 text-xs tracking-widest uppercase transition-all duration-300 hover:bg-gold hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold rounded-sm"
         >
           {content.ctaLabel}
         </Link>

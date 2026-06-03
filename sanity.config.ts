@@ -5,9 +5,9 @@ import { schemaTypes } from "./sanity/schemas";
 
 export default defineConfig({
   name: "default",
-  title: "The Anthracite Limited",
+  title: "Kwabena Kissiedu — Portfolio",
 
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "jv5ghckv",
   dataset: "production",
 
   plugins: [structureTool(), visionTool()],

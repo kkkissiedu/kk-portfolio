@@ -9,9 +9,9 @@ import {
 } from "react";
 
 export type ServiceId =
-  | "architectural-structural"
-  | "sculptor"
-  | "real-estate";
+  | "ml-research"
+  | "structural-engineering"
+  | "3d-design";
 
 type ServiceModalContextType = {
   activeServiceId: ServiceId | null;

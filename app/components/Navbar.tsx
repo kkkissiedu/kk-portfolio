@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useBodyScrollLock } from "@/app/hooks/useBodyScrollLock";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
   { label: "About", href: "/#about", section: "about" },
-  { label: "Services", href: "/#services", section: "services" },
-  { label: "Projects", href: "/#projects", section: "projects" },
-  { label: "Team", href: "/#team", section: "team" },
+  { label: "Work", href: "/#projects", section: "projects" },
+  { label: "Publications", href: "/#publications", section: "publications" },
+  { label: "YouTube", href: "/#youtube", section: "youtube" },
+  { label: "Gallery", href: "/gallery", section: null as string | null },
   { label: "Contact", href: "/#contact", section: "contact" },
 ];
 
@@ -31,7 +31,7 @@ export default function Navbar() {
       setActiveSection(null);
       return;
     }
-    const sectionIds = NAV_LINKS.map((l) => l.section);
+    const sectionIds = NAV_LINKS.map((l) => l.section).filter((s): s is string => s !== null);
     const observers: IntersectionObserver[] = [];
 
     sectionIds.forEach((id) => {
@@ -67,17 +67,12 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-3 flex-shrink-0"
-            aria-label="The Anthracite Limited"
+            className="flex items-center gap-3 flex-shrink-0 group"
+            aria-label="Kwabena Kissiedu — home"
           >
-            <Image
-              src="/logo-icon.svg"
-              alt="The Anthracite Limited"
-              width={160}
-              height={44}
-              priority
-              className="h-9 w-auto object-contain"
-            />
+            <span className="font-heading text-xl font-bold tracking-tight text-cream group-hover:text-gold transition-colors duration-300">
+              KK
+            </span>
           </Link>
 
           {/* Desktop nav */}

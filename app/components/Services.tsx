@@ -10,103 +10,73 @@ import { useSwipe } from "@/app/hooks/useSwipe";
 gsap.registerPlugin(ScrollTrigger);
 
 type ServicesProps = {
-  servicesLabel?: string;
-  servicesHeading?: string;
-  servicesHeadingGoldWord?: string;
-  serviceOneTitle?: string;
-  serviceOneSubtitle?: string | null;
-  serviceOneDescription?: string;
-  serviceTwoTitle?: string;
-  serviceTwoSubtitle?: string | null;
-  serviceTwoDescription?: string;
-  serviceThreeTitle?: string;
-  serviceThreeSubtitle?: string | null;
-  serviceThreeDescription?: string;
+  whatIDoLabel?: string;
+  whatIDoHeading?: string;
+  whatIDoAccentWord?: string;
+  card1Title?: string;
+  card1Subtitle?: string | null;
+  card1Description?: string;
+  card2Title?: string;
+  card2Subtitle?: string | null;
+  card2Description?: string;
+  card3Title?: string;
+  card3Subtitle?: string | null;
+  card3Description?: string;
 };
 
-function ArchitectureIcon() {
+function MLIcon() {
   return (
-    <svg
-      width="36"
-      height="36"
-      viewBox="0 0 36 36"
-      fill="none"
-      aria-hidden="true"
-    >
-      <rect x="4" y="20" width="28" height="12" rx="1" stroke="#C9952A" strokeWidth="1.5" />
-      <rect x="10" y="12" width="16" height="8" stroke="#C9952A" strokeWidth="1.5" />
-      <path d="M18 4L28 12H8L18 4Z" stroke="#C9952A" strokeWidth="1.5" strokeLinejoin="round" />
-      <rect x="15" y="24" width="6" height="8" stroke="#C9952A" strokeWidth="1.5" />
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+      <circle cx="8" cy="10" r="2.5" stroke="#0F2C5C" strokeWidth="1.5" />
+      <circle cx="8" cy="18" r="2.5" stroke="#0F2C5C" strokeWidth="1.5" />
+      <circle cx="8" cy="26" r="2.5" stroke="#0F2C5C" strokeWidth="1.5" />
+      <circle cx="18" cy="14" r="2.5" stroke="#0F2C5C" strokeWidth="1.5" />
+      <circle cx="18" cy="22" r="2.5" stroke="#0F2C5C" strokeWidth="1.5" />
+      <circle cx="28" cy="18" r="2.5" stroke="#0F2C5C" strokeWidth="1.5" />
+      <path d="M10.5 10L15.5 14M10.5 18L15.5 14M10.5 18L15.5 22M10.5 26L15.5 22M20.5 14L25.5 18M20.5 22L25.5 18" stroke="#0F2C5C" strokeWidth="1.2" strokeOpacity="0.6" />
     </svg>
   );
 }
 
-function SculptorIcon() {
+function StructuralIcon() {
   return (
-    <svg
-      width="36"
-      height="36"
-      viewBox="0 0 36 36"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M18 4L32 12V24L18 32L4 24V12L18 4Z"
-        stroke="#C9952A"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-      />
-      <path d="M18 4V32" stroke="#C9952A" strokeWidth="1.5" strokeOpacity="0.4" />
-      <path d="M4 12L18 20L32 12" stroke="#C9952A" strokeWidth="1.5" strokeOpacity="0.4" />
-      <circle cx="18" cy="18" r="3" stroke="#C9952A" strokeWidth="1.5" />
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+      <rect x="4" y="20" width="28" height="12" rx="1" stroke="#0F2C5C" strokeWidth="1.5" />
+      <rect x="10" y="12" width="16" height="8" stroke="#0F2C5C" strokeWidth="1.5" />
+      <path d="M18 4L28 12H8L18 4Z" stroke="#0F2C5C" strokeWidth="1.5" strokeLinejoin="round" />
+      <rect x="15" y="24" width="6" height="8" stroke="#0F2C5C" strokeWidth="1.5" />
     </svg>
   );
 }
 
-function RealEstateIcon() {
+function ThreeDIcon() {
   return (
-    <svg
-      width="36"
-      height="36"
-      viewBox="0 0 36 36"
-      fill="none"
-      aria-hidden="true"
-    >
-      <circle cx="16" cy="15" r="6" stroke="#C9952A" strokeWidth="1.5" />
-      <circle cx="16" cy="15" r="2" stroke="#C9952A" strokeWidth="1.5" />
-      <path
-        d="M16 21C16 21 8 27 8 33H24C24 27 16 21 16 21Z"
-        stroke="#C9952A"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-      />
-      <path d="M24 10L28 8V26" stroke="#C9952A" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M26 12H30" stroke="#C9952A" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M26 16H30" stroke="#C9952A" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M26 20H30" stroke="#C9952A" strokeWidth="1.5" strokeLinecap="round" />
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+      <path d="M18 4L32 12V24L18 32L4 24V12L18 4Z" stroke="#0F2C5C" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="M18 4V20M18 20L4 12M18 20L32 12" stroke="#0F2C5C" strokeWidth="1.5" strokeOpacity="0.6" />
     </svg>
   );
 }
 
 const SERVICE_HREFS: Record<ServiceId, string> = {
-  "architectural-structural": "/work/architectural-structural",
-  "sculptor": "/work/sculptor",
-  "real-estate": "/services/real-estate",
+  "ml-research": "/work/ml-research",
+  "structural-engineering": "/work/structural-engineering",
+  "3d-design": "/work/3d-design",
 };
 
 export default function Services({
-  servicesLabel = "What We Do",
-  servicesHeading = "Our Services",
-  servicesHeadingGoldWord = "Services",
-  serviceOneTitle = "Architectural & Structural Design",
-  serviceOneSubtitle = null,
-  serviceOneDescription = "From concept to construction documentation — precision-engineered designs informed by physics-based simulations, computational methods, and real-world performance targets.",
-  serviceTwoTitle = "3D Design Services",
-  serviceTwoSubtitle = "via The Sculptor",
-  serviceTwoDescription = "High-fidelity 3D modelling, digital twins, and parametric design through our sister studio, enabling seamless transitions from virtual model to physical printed structure.",
-  serviceThreeTitle = "Real Estate & Construction",
-  serviceThreeSubtitle = null,
-  serviceThreeDescription = "End-to-end real estate development and construction management, anchored by our flagship 3D-printed Green Building estate — built for durability, sustainability, and scale.",
+  whatIDoLabel = "What I Do",
+  whatIDoHeading = "Three disciplines, one workflow",
+  whatIDoAccentWord = "workflow",
+  card1Title = "ML & Research",
+  card1Subtitle = null,
+  card1Description = "Developing custom computer vision models (U-Net, YOLOv8) for SHM and site safety, and building Physics-Informed Neural Networks (PINNs) for predictive analysis.",
+  card2Title = "Structural Engineering",
+  card2Subtitle = null,
+  card2Description = "Applying modern computational tools to traditional structural analysis, including physics-based numerical modeling in ABAQUS and advanced BIM workflows in Autodesk Revit.",
+  card3Title = "3D Design",
+  card3Subtitle = null,
+  card3Description = "Creating high-fidelity 3D assets and immersive digital environments using Blender, ZBrush, and Unreal Engine for synthetic data generation and virtual reality experiences.",
 }: ServicesProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -122,25 +92,25 @@ export default function Services({
 
   const services = [
     {
-      id: "architectural-structural" as ServiceId,
-      Icon: ArchitectureIcon,
-      title: serviceOneTitle,
-      subtitle: serviceOneSubtitle ?? null,
-      description: serviceOneDescription,
+      id: "ml-research" as ServiceId,
+      Icon: MLIcon,
+      title: card1Title,
+      subtitle: card1Subtitle ?? null,
+      description: card1Description,
     },
     {
-      id: "sculptor" as ServiceId,
-      Icon: SculptorIcon,
-      title: serviceTwoTitle,
-      subtitle: serviceTwoSubtitle ?? null,
-      description: serviceTwoDescription,
+      id: "structural-engineering" as ServiceId,
+      Icon: StructuralIcon,
+      title: card2Title,
+      subtitle: card2Subtitle ?? null,
+      description: card2Description,
     },
     {
-      id: "real-estate" as ServiceId,
-      Icon: RealEstateIcon,
-      title: serviceThreeTitle,
-      subtitle: serviceThreeSubtitle ?? null,
-      description: serviceThreeDescription,
+      id: "3d-design" as ServiceId,
+      Icon: ThreeDIcon,
+      title: card3Title,
+      subtitle: card3Subtitle ?? null,
+      description: card3Description,
     },
   ];
 
@@ -155,8 +125,7 @@ export default function Services({
 
   const { onTouchStart, onTouchEnd } = useSwipe(goToNext, goToPrev);
 
-  // Split heading at gold word
-  const goldIdx = servicesHeading.indexOf(servicesHeadingGoldWord);
+  const goldIdx = whatIDoHeading.indexOf(whatIDoAccentWord);
 
   useEffect(() => {
     if (!h2LineRef.current) return;
@@ -198,76 +167,72 @@ export default function Services({
   const headingNode =
     goldIdx !== -1 ? (
       <>
-        {servicesHeading.slice(0, goldIdx)}
-        <span className="text-gold">{servicesHeadingGoldWord}</span>
-        {servicesHeading.slice(goldIdx + servicesHeadingGoldWord.length)}
+        {whatIDoHeading.slice(0, goldIdx)}
+        <span className="text-gold">{whatIDoAccentWord}</span>
+        {whatIDoHeading.slice(goldIdx + whatIDoAccentWord.length)}
       </>
     ) : (
-      servicesHeading
+      whatIDoHeading
     );
 
   return (
     <section
       ref={sectionRef}
       id="services"
-      className="relative bg-anthracite text-cream py-20 lg:py-28 px-6 md:px-8 lg:px-16 overflow-hidden"
+      className="relative bg-white text-dark-text py-20 lg:py-28 px-6 md:px-8 lg:px-16 overflow-hidden"
     >
-      {/* Decorative section number */}
       <div className="section-number" data-number="02" aria-hidden="true" />
 
       <div className="max-w-[1280px] mx-auto">
-
-        {/* Section header */}
         <div className="mb-10 md:mb-12">
           <p className="text-sm md:text-base tracking-[0.4em] font-semibold uppercase text-gold mb-4">
-            {servicesLabel}
+            {whatIDoLabel}
           </p>
           <div className="overflow-hidden">
             <h2
               ref={h2LineRef}
               data-gsap="true"
-              className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight text-cream max-w-xl"
+              className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight text-dark-text max-w-2xl"
             >
               {headingNode}
             </h2>
           </div>
         </div>
 
-        {/* Mobile: carousel */}
-        <div
-          className="md:hidden"
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-        >
-          {/*
-            Grid-stack: all cards share col-start-1 row-start-1 so the container
-            height is always the tallest card — no layout shift when cycling.
-          */}
+        {/* Mobile carousel */}
+        <div className="md:hidden" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
           <div className="grid">
             {services.map((service, i) => (
               <div
-                key={i}
+                key={service.id}
                 className={`col-start-1 row-start-1 ${
                   i === currentIndex
-                    ? `pointer-events-auto ${prefersReducedMotion ? "" : direction === "next" ? "slide-enter-left" : "slide-enter-right"}`
+                    ? `pointer-events-auto ${
+                        prefersReducedMotion
+                          ? ""
+                          : direction === "next"
+                          ? "slide-enter-left"
+                          : "slide-enter-right"
+                      }`
                     : "opacity-0 pointer-events-none"
                 }`}
               >
                 <ServiceCard
                   service={service}
                   href={SERVICE_HREFS[service.id]}
-                  ref={(el) => { cardRefs.current[i] = el; }}
+                  ref={(el) => {
+                    cardRefs.current[i] = el;
+                  }}
                 />
               </div>
             ))}
           </div>
 
-          {/* Carousel controls */}
           <div className="flex items-center justify-center gap-4 mt-6">
             <button
               onClick={goToPrev}
-              className="w-10 h-10 border border-gold/40 text-gold hover:bg-gold hover:text-anthracite transition-colors flex items-center justify-center"
-              aria-label="Previous service"
+              className="w-10 h-10 border border-gold/40 text-gold hover:bg-gold hover:text-white transition-colors flex items-center justify-center"
+              aria-label="Previous discipline"
             >
               ←
             </button>
@@ -275,32 +240,35 @@ export default function Services({
               {services.map((_, i) => (
                 <div
                   key={i}
-                  className={`w-2 h-2 rounded-full transition-colors ${i === currentIndex ? "bg-gold" : "bg-gold/30"}`}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    i === currentIndex ? "bg-gold" : "bg-gold/30"
+                  }`}
                 />
               ))}
             </div>
             <button
               onClick={goToNext}
-              className="w-10 h-10 border border-gold/40 text-gold hover:bg-gold hover:text-anthracite transition-colors flex items-center justify-center"
-              aria-label="Next service"
+              className="w-10 h-10 border border-gold/40 text-gold hover:bg-gold hover:text-white transition-colors flex items-center justify-center"
+              aria-label="Next discipline"
             >
               →
             </button>
           </div>
         </div>
 
-        {/* Desktop: grid */}
+        {/* Desktop grid */}
         <div className="hidden md:grid md:grid-cols-3 gap-6 md:gap-8">
           {services.map((service, i) => (
             <ServiceCard
               key={service.id}
               service={service}
               href={SERVICE_HREFS[service.id]}
-              ref={(el) => { cardRefs.current[i] = el; }}
+              ref={(el) => {
+                cardRefs.current[i] = el;
+              }}
             />
           ))}
         </div>
-
       </div>
     </section>
   );
@@ -326,9 +294,9 @@ const ServiceCard = forwardRef<
       data-gsap="true"
       className="
         group relative flex flex-col gap-6 p-8 md:p-10
-        border border-cream/10
+        border border-dark-text/10 bg-cream
         transition-all duration-500 ease-out
-        hover:border-gold
+        hover:border-gold hover:bg-white
         before:absolute before:inset-0
         before:border before:border-gold before:opacity-0
         before:scale-[0.97] before:transition-all before:duration-500
@@ -336,14 +304,12 @@ const ServiceCard = forwardRef<
         before:pointer-events-none
       "
     >
-      {/* Icon */}
       <div className="transition-transform duration-300 group-hover:scale-110 w-fit">
         <Icon />
       </div>
 
-      {/* Title */}
       <div>
-        <h3 className="text-xl md:text-2xl font-bold text-cream leading-snug mb-1">
+        <h3 className="text-xl md:text-2xl font-bold text-dark-text leading-snug mb-1">
           {title}
         </h3>
         {subtitle && (
@@ -353,18 +319,16 @@ const ServiceCard = forwardRef<
         )}
       </div>
 
-      {/* Description */}
-      <p className="text-cream/55 text-sm leading-relaxed flex-1">
+      <p className="text-dark-text/60 text-sm leading-relaxed flex-1">
         {description}
       </p>
 
-      {/* CTA */}
       <Link
         href={href}
         className="
           mt-2 flex items-center justify-center gap-3
-          border-2 border-gold bg-gold/10
-          hover:bg-gold hover:text-anthracite
+          border-2 border-gold bg-gold/5
+          hover:bg-gold hover:text-white
           text-gold font-semibold
           px-6 py-4 text-sm tracking-[0.2em] uppercase
           transition-colors duration-300
@@ -375,7 +339,6 @@ const ServiceCard = forwardRef<
         EXPLORE PROJECTS →
       </Link>
 
-      {/* Bottom gold accent line */}
       <div
         className="h-px bg-gold scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"
         aria-hidden

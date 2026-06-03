@@ -9,8 +9,13 @@ gsap.registerPlugin(ScrollTrigger);
 type AboutProps = {
   aboutLabel?: string;
   aboutHeading?: string;
-  aboutHeadingGoldWords?: string;
-  aboutBody?: string;
+  aboutHeadingAccentWords?: string;
+  aboutBodyPara1?: string;
+  aboutBodyPara2?: string;
+  aboutPhotoUrl?: string;
+  anthraciteUrl?: string;
+  academicCvUrl?: string;
+  professionalCvUrl?: string;
   statOneValue?: string;
   statOneLabel?: string;
   statTwoValue?: string;
@@ -27,16 +32,21 @@ function parseStatValue(raw: string): { value: number; suffix: string } {
 }
 
 export default function About({
-  aboutLabel = "About Us",
-  aboutHeading = "Ghana's First 3D-Printed Green Estate",
-  aboutHeadingGoldWords = "3D-Printed",
-  aboutBody = "The Anthracite Limited is pioneering Ghana's first 3D-printed Green Building estate, fusing Physics-Informed AI, computational design, and sustainable construction into a complete workflow from digital twin to physical structure.",
-  statOneValue = "12+",
-  statOneLabel = "Projects",
+  aboutLabel = "About",
+  aboutHeading = "Research-focused Engineer building intelligent infrastructure",
+  aboutHeadingAccentWords = "intelligent",
+  aboutBodyPara1 = "I am a research-focused Civil Engineer passionate about applying cutting-edge AI to solve real-world infrastructure challenges in Ghana. My work integrates Physics-Informed AI, computational mechanics, and design automation into a complete workflow: I create 3D digital worlds, use them to generate synthetic data, and then train the physics-informed models needed for analysis.",
+  aboutBodyPara2 = "This passion led me to co-found The Anthracite Ltd., a startup with the mission to develop Ghana's first 3D-printed Green Building estate. My ultimate goal is to pioneer a new paradigm where structures are built with and managed by intelligent digital twins throughout their entire lifespan.",
+  aboutPhotoUrl,
+  anthraciteUrl = "https://theanthracite.com",
+  academicCvUrl,
+  professionalCvUrl,
+  statOneValue = "20+",
+  statOneLabel = "Projects shipped",
   statTwoValue = "3",
-  statTwoLabel = "Services",
-  statThreeValue = "2",
-  statThreeLabel = "Engineers",
+  statTwoLabel = "Disciplines",
+  statThreeValue = "1st",
+  statThreeLabel = "Class Honours, KNUST",
 }: AboutProps) {
   const stats = [
     { ...parseStatValue(statOneValue), label: statOneLabel },
@@ -44,8 +54,7 @@ export default function About({
     { ...parseStatValue(statThreeValue), label: statThreeLabel },
   ];
 
-  // Split heading at gold word: everything before+including gold = line 1, after = line 2
-  const goldWord = aboutHeadingGoldWords;
+  const goldWord = aboutHeadingAccentWords;
   const goldIdx = aboutHeading.indexOf(goldWord);
   let line1Before = aboutHeading;
   let line1Gold = "";
@@ -160,15 +169,33 @@ export default function About({
       <div className="section-number" data-number="01" aria-hidden="true" />
 
       <div className="max-w-[1280px] mx-auto">
-        {/* Two-column layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center mb-12">
+        {/* Three-column layout: photo | heading+bio | (mobile stacked) */}
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] lg:grid-cols-[320px_1fr] gap-12 md:gap-16 items-start mb-12">
 
-          {/* Left — large bold statement */}
+          {/* Left — portrait photo */}
+          <div className="flex justify-center md:justify-start">
+            <div className="relative w-64 h-80 md:w-full md:h-auto md:aspect-[3/4] bg-cream border border-dark-text/10 overflow-hidden">
+              {aboutPhotoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={aboutPhotoUrl}
+                  alt="Kwabena Kwayisi Kissiedu"
+                  className="w-full h-full object-cover object-center"
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center bg-cream">
+                  <span className="font-heading text-6xl font-bold text-gold/20">KK</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right — heading + bio + actions */}
           <div>
-            <p className="text-sm md:text-base tracking-[0.4em] font-semibold uppercase text-gold-dark mb-4">
+            <p className="text-sm md:text-base tracking-[0.4em] font-semibold uppercase text-gold mb-4">
               {aboutLabel}
             </p>
-            <h2 className="text-5xl sm:text-6xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-dark-text">
+            <h2 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight text-dark-text mb-6">
               <div className="overflow-hidden">
                 <div ref={h2Line1Ref} data-gsap="true">
                   {line1Before}
@@ -183,13 +210,35 @@ export default function About({
                 </div>
               )}
             </h2>
-          </div>
 
-          {/* Right — mission paragraph */}
-          <div ref={rightRef} data-gsap="true">
-            <p className="text-dark-text/75 text-base md:text-lg leading-relaxed">
-              {aboutBody}
-            </p>
+            <div ref={rightRef} data-gsap="true" className="space-y-4 mb-8">
+              <p className="text-dark-text/75 text-base leading-relaxed">{aboutBodyPara1}</p>
+              <p className="text-dark-text/75 text-base leading-relaxed">{aboutBodyPara2}</p>
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex flex-wrap gap-3">
+              {academicCvUrl && (
+                <a href={academicCvUrl} download
+                  className="inline-flex items-center gap-2 border border-gold text-gold hover:bg-gold hover:text-white px-5 py-3 text-xs tracking-widest uppercase transition-colors duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden><path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  Academic CV
+                </a>
+              )}
+              {professionalCvUrl && (
+                <a href={professionalCvUrl} download
+                  className="inline-flex items-center gap-2 border border-gold text-gold hover:bg-gold hover:text-white px-5 py-3 text-xs tracking-widest uppercase transition-colors duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden><path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  Professional CV
+                </a>
+              )}
+              {anthraciteUrl && (
+                <a href={anthraciteUrl} target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-gold text-white hover:bg-gold-highlight px-5 py-3 text-xs tracking-widest uppercase transition-colors duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold">
+                  The Anthracite →
+                </a>
+              )}
+            </div>
           </div>
         </div>
 

@@ -20,11 +20,24 @@ export type ResolvedImage = {
   alt?: string;
 };
 
+export type ResolvedFile = {
+  asset: {
+    _id: string;
+    url: string;
+    originalFilename?: string;
+  };
+};
+
+export type ProjectCategory =
+  | "structural-engineering"
+  | "ml-research"
+  | "3d-design";
+
 export type Project = {
   _id: string;
   title: string;
   slug?: { current: string };
-  category: string;
+  category: ProjectCategory | string;
   subcategory?: string;
   shortDescription?: string;
   description?: string;
@@ -42,32 +55,46 @@ export type Project = {
   year?: number;
   projectType?: string;
   tools?: string[];
+  githubUrl?: string;
+  youtubeVideoId?: string;
+  progressPdfUrl?: string;
+  featured?: boolean;
 };
 
-export type Property = {
+export type PublicationStatus = "accepted" | "published" | "in-progress";
+
+export type Publication = {
   _id: string;
   title: string;
-  slug?: { current: string };
-  description?: string;
-  shortDescription?: string;
-  images?: ResolvedImage[];
-  videoUrl?: string;
-  panoramaUrl?: string;
-  location?: string;
-  bedrooms?: number;
-  bathrooms?: number;
-  pricePerNight?: number;
-  available?: boolean;
-  amenities?: string[];
-  whatsappNumber?: string;
-  phoneNumber?: string;
+  authors?: string;
+  venue?: string;
+  year?: number;
+  status: PublicationStatus;
+  url?: string;
+  abstract?: string;
+  order?: number;
 };
 
-export type TeamMember = {
+export type Testimonial = {
+  _id: string;
+  quote: string;
+  name: string;
+  role?: string;
+  order?: number;
+};
+
+export type ToolkitItem = {
+  name: string;
+  icon?: ResolvedImage;
+};
+
+export type GalleryItem =
+  | { _key?: string; _type: "imageItem"; image: ResolvedImage; caption?: string }
+  | { _key?: string; _type: "youtubeItem"; youtubeUrl: string; caption?: string };
+
+export type GalleryGroup = {
   _id: string;
   name: string;
-  role: string;
-  bio: string;
-  photo: ResolvedImage | null;
-  linkedinUrl: string | null;
+  order?: number;
+  items?: GalleryItem[];
 };
