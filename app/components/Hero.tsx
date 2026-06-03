@@ -4,25 +4,31 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 type HeroProps = {
+  heroOverline?: string;
   heroTagline?: string;
-  heroGoldWord?: string;
+  heroAccentWord?: string;
   heroSubtitle?: string;
   heroCtaPrimary?: string;
   heroCtaSecondary?: string;
 };
 
 export default function Hero({
-  heroTagline = "Building Ghana's Future",
-  heroGoldWord = "Future",
-  heroSubtitle = "Pioneering AI-driven construction and 3D-printed green buildings to shape a sustainable, modern Ghana.",
-  heroCtaPrimary = "Our Services",
-  heroCtaSecondary = "View Projects",
+  heroOverline = "Kwabena Kwayisi Kissiedu",
+  heroTagline = "Engineering the Future with Data & Design",
+  heroAccentWord = "Data",
+  heroSubtitle = "A First Class Honors Civil Engineer developing AI-driven tools for safer, more sustainable infrastructure through a complete workflow from 3D synthetic data generation to physics-informed modeling.",
+  heroCtaPrimary = "View My Work",
+  heroCtaSecondary = "Get in Touch",
 }: HeroProps) {
   const words = heroTagline.split(" ");
-  const goldIndex = words.indexOf(heroGoldWord);
+  const goldIndex = words.findIndex((w) =>
+    w.replace(/[^a-zA-Z]/g, "").toLowerCase() ===
+    heroAccentWord.replace(/[^a-zA-Z]/g, "").toLowerCase()
+  );
 
   const containerRef = useRef<HTMLElement>(null);
   const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const overlineRef = useRef<HTMLParagraphElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
@@ -34,9 +40,15 @@ export default function Hero({
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
       tl.fromTo(
+        overlineRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6 }
+      );
+      tl.fromTo(
         wordRefs.current.filter(Boolean),
         { opacity: 0, y: 60, skewY: 4 },
-        { opacity: 1, y: 0, skewY: 0, duration: 0.9, stagger: 0.15 }
+        { opacity: 1, y: 0, skewY: 0, duration: 0.9, stagger: 0.12 },
+        "-=0.2"
       );
 
       tl.fromTo(
@@ -78,9 +90,10 @@ export default function Hero({
         preload="none"
         poster="/hero-poster.jpg"
         aria-hidden
-        style={{ filter: 'brightness(0.65) saturate(1.2) sepia(0.3) hue-rotate(5deg)' }}
+        style={{ filter: "brightness(0.45) saturate(0.7)" }}
       >
         <source src="/hero.webm" type="video/webm" />
+        <source src="/hero.mp4" type="video/mp4" />
       </video>
 
       {/* Dark overlay for legibility */}
@@ -91,7 +104,7 @@ export default function Hero({
         className="absolute inset-0 z-[3] pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 70% 60% at 50% 40%, rgba(201,149,42,0.07) 0%, transparent 70%)",
+            "radial-gradient(ellipse 70% 60% at 50% 40%, rgba(15,44,92,0.18) 0%, transparent 70%)",
         }}
         aria-hidden
       />
@@ -99,8 +112,12 @@ export default function Hero({
       {/* Content */}
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-8 lg:px-16 text-center">
         {/* Overline */}
-        <p className="text-sm md:text-base tracking-[0.4em] font-semibold uppercase text-gold mb-4">
-          The Anthracite Limited
+        <p
+          ref={overlineRef}
+          className="text-sm md:text-base tracking-[0.4em] font-semibold uppercase text-gold mb-4"
+          data-gsap="true"
+        >
+          {heroOverline}
         </p>
 
         {/* Heading */}
@@ -116,7 +133,7 @@ export default function Hero({
                 }}
                 data-gsap="true"
                 className={`inline-block ${
-                  i === goldIndex ? "text-gold" : "text-cream"
+                  i === goldIndex ? "text-gold" : "text-cream/90"
                 }`}
                 style={{ willChange: "transform, opacity" }}
               >
@@ -142,14 +159,14 @@ export default function Hero({
           className="flex flex-col sm:flex-row gap-4 items-center justify-center"
         >
           <a
-            href="#services"
-            className="relative inline-flex items-center justify-center px-8 py-4 text-sm tracking-widest uppercase font-body font-medium bg-gold text-anthracite hover:bg-gold-highlight transition-colors duration-300 min-w-[180px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-anthracite"
+            href="#projects"
+            className="relative inline-flex items-center justify-center px-8 py-4 text-sm tracking-widest uppercase font-body font-medium bg-gold text-white hover:bg-gold-highlight transition-colors duration-300 min-w-[180px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-anthracite"
           >
             {heroCtaPrimary}
           </a>
           <a
-            href="#projects"
-            className="relative inline-flex items-center justify-center px-8 py-4 text-sm tracking-widest uppercase font-body font-medium border border-gold text-gold hover:bg-gold hover:text-anthracite transition-colors duration-300 min-w-[180px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-anthracite"
+            href="#contact"
+            className="relative inline-flex items-center justify-center px-8 py-4 text-sm tracking-widest uppercase font-body font-medium border border-gold text-gold hover:bg-gold hover:text-white transition-colors duration-300 min-w-[180px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-anthracite"
           >
             {heroCtaSecondary}
           </a>

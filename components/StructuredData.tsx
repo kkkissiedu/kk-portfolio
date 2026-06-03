@@ -1,97 +1,58 @@
 export default function StructuredData() {
-  const organizationSchema = {
+  const personSchema = {
     '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'The Anthracite Limited',
-    url: 'https://theanthracite.com',
-    logo: 'https://theanthracite.com/logo-icon.svg',
+    '@type': 'Person',
+    name: 'Kwabena Kwayisi Kissiedu',
+    url: 'https://kkkissiedu.com',
+    image: 'https://kkkissiedu.com/og-image.png',
+    jobTitle: 'Structural Engineer & ML Researcher',
     description:
-      'Pioneering AI-driven construction and 3D-printed green buildings to shape a sustainable, modern Ghana.',
-    foundingDate: '2024',
-    email: 'hello@theanthracite.com',
+      'First Class Civil Engineer applying Physics-Informed AI, structural analysis, and 3D design to infrastructure challenges in Ghana.',
+    email: 'kissiedukwabena4@gmail.com',
+    alumniOf: {
+      '@type': 'CollegeOrUniversity',
+      name: 'Kwame Nkrumah University of Science and Technology (KNUST)',
+    },
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Kumasi',
       addressRegion: 'Ashanti',
       addressCountry: 'GH',
     },
-    sameAs: [],
-  };
-
-  const localBusinessSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    '@id': 'https://theanthracite.com/#business',
-    name: 'The Anthracite Limited',
-    image: 'https://theanthracite.com/og-image.png',
-    url: 'https://theanthracite.com',
-    telephone: '',
-    priceRange: '$$$',
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Kumasi',
-      addressRegion: 'Ashanti',
-      addressCountry: 'GH',
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: 6.6885,
-      longitude: -1.6244,
-    },
-    areaServed: [
-      { '@type': 'Country', name: 'Ghana' },
-      { '@type': 'Place', name: 'Accra' },
-      { '@type': 'Place', name: 'Kumasi' },
+    sameAs: [
+      'https://github.com/kkkissiedu',
+      'http://www.youtube.com/@kkkissiedu',
+    ],
+    knowsAbout: [
+      'Structural Engineering',
+      'Machine Learning',
+      'Physics-Informed Neural Networks',
+      'Computer Vision',
+      '3D Design',
+      'Blender',
+      'Unreal Engine',
+      'Python',
+      'PyTorch',
     ],
   };
 
-  const servicesSchema = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Service',
-      name: 'Architectural & Structural Design',
-      provider: { '@type': 'Organization', name: 'The Anthracite Limited' },
-      areaServed: { '@type': 'Country', name: 'Ghana' },
-      description:
-        'Precision-engineered architectural and structural designs informed by physics-based simulations, computational methods, and real-world performance targets.',
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Service',
-      name: '3D Design Services',
-      provider: { '@type': 'Organization', name: 'The Anthracite Limited' },
-      areaServed: { '@type': 'Country', name: 'Ghana' },
-      description:
-        'High-fidelity 3D modelling, digital twins, and parametric design through our sister studio, The Sculptor.',
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Service',
-      name: 'Real Estate & Construction',
-      provider: { '@type': 'Organization', name: 'The Anthracite Limited' },
-      areaServed: { '@type': 'Country', name: 'Ghana' },
-      description:
-        "End-to-end real estate development and construction management, anchored by Ghana's first 3D-printed Green Building estate.",
-    },
-  ];
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Kwabena Kissiedu — Portfolio',
+    url: 'https://kkkissiedu.com',
+  };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
-      {servicesSchema.map((schema, idx) => (
-        <script
-          key={idx}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
     </>
   );
 }

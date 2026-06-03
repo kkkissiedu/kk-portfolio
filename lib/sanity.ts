@@ -1,12 +1,29 @@
 import { createClient } from "next-sanity";
 import { createImageUrlBuilder as imageUrlBuilder } from "@sanity/image-url";
 import { cache } from "react";
-import type { Project, Property, TeamMember, SanityImageSource } from "@/types/sanity";
+import type {
+  Project,
+  Publication,
+  Testimonial,
+  GalleryGroup,
+  ResolvedImage,
+  ResolvedFile,
+  SanityImageSource,
+} from "@/types/sanity";
 
 export type { SanityImageSource };
+export type {
+  Project,
+  Publication,
+  Testimonial,
+  GalleryGroup,
+} from "@/types/sanity";
+
+const projectId =
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "jv5ghckv";
 
 export const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+  projectId,
   dataset: "production",
   apiVersion: "2024-01-01",
   useCdn: true,
@@ -18,170 +35,231 @@ export function urlFor(source: SanityImageSource) {
   return builder.image(source);
 }
 
+// ─── Site Settings ────────────────────────────────────────────────────
+
+export type ToolkitItemResolved = {
+  name: string;
+  icon?: ResolvedImage;
+};
+
 export type SiteSettings = {
   // Hero
-  heroTagline: string;
-  heroGoldWord: string;
-  heroSubtitle: string;
-  heroCtaPrimary: string;
-  heroCtaSecondary: string;
+  heroOverline?: string;
+  heroTagline?: string;
+  heroAccentWord?: string;
+  heroSubtitle?: string;
+  heroCtaPrimary?: string;
+  heroCtaSecondary?: string;
   // About
-  aboutLabel: string;
-  aboutHeading: string;
-  aboutHeadingGoldWords: string;
-  aboutBody: string;
-  statOneValue: string;
-  statOneLabel: string;
-  statTwoValue: string;
-  statTwoLabel: string;
-  statThreeValue: string;
-  statThreeLabel: string;
-  // Services
-  servicesLabel: string;
-  servicesHeading: string;
-  servicesHeadingGoldWord: string;
-  serviceOneTitle: string;
-  serviceOneSubtitle: string | null;
-  serviceOneDescription: string;
-  serviceOneModalDescription: string;
-  serviceOneServices: string[];
-  serviceTwoTitle: string;
-  serviceTwoSubtitle: string | null;
-  serviceTwoDescription: string;
-  serviceTwoModalDescription: string;
-  serviceTwoServices: string[];
-  serviceThreeTitle: string;
-  serviceThreeSubtitle: string | null;
-  serviceThreeDescription: string;
-  serviceThreeModalDescription: string;
-  serviceThreeServices: string[];
+  aboutLabel?: string;
+  aboutHeading?: string;
+  aboutHeadingAccentWords?: string;
+  aboutBodyPara1?: string;
+  aboutBodyPara2?: string;
+  aboutPhoto?: ResolvedImage;
+  anthraciteUrl?: string;
+  academicCv?: ResolvedFile;
+  professionalCv?: ResolvedFile;
+  statOneValue?: string;
+  statOneLabel?: string;
+  statTwoValue?: string;
+  statTwoLabel?: string;
+  statThreeValue?: string;
+  statThreeLabel?: string;
+  // What I Do
+  whatIDoLabel?: string;
+  whatIDoHeading?: string;
+  whatIDoAccentWord?: string;
+  card1Title?: string;
+  card1Subtitle?: string;
+  card1Description?: string;
+  card2Title?: string;
+  card2Subtitle?: string;
+  card2Description?: string;
+  card3Title?: string;
+  card3Subtitle?: string;
+  card3Description?: string;
+  // Channel
+  channelLabel?: string;
+  channelHeading?: string;
+  channelAccentWord?: string;
+  channelIntro?: string;
+  channelVideoUrl?: string;
+  channelChannelUrl?: string;
+  channelCtaLabel?: string;
+  // Toolkit
+  toolkitLabel?: string;
+  toolkitHeading?: string;
+  toolkitAccentWord?: string;
+  toolkitIntro?: string;
+  toolkitColumn1Title?: string;
+  toolkitColumn1Items?: ToolkitItemResolved[];
+  toolkitColumn2Title?: string;
+  toolkitColumn2Items?: ToolkitItemResolved[];
+  toolkitColumn3Title?: string;
+  toolkitColumn3Items?: ToolkitItemResolved[];
   // Contact
-  contactLabel: string;
-  contactHeading: string;
-  contactHeadingGoldWord: string;
-  contactSubtext: string;
-  contactEmail: string;
-  contactLocation: string;
+  contactLabel?: string;
+  contactHeading?: string;
+  contactAccentWord?: string;
+  contactSubtext?: string;
+  contactEmail?: string;
+  contactLocation?: string;
+  contactGithubUrl?: string;
+  contactLinkedinUrl?: string;
+  contactYoutubeUrl?: string;
   // Footer
-  footerCopyright: string;
-  footerTagline: string | null;
+  footerCopyright?: string;
+  footerTagline?: string;
   // Sub-pages
   pages?: {
-    architectural?: { heroHeading?: string; heroSubtitle?: string };
-    sculptor?: { heroHeading?: string; heroSubtitle?: string };
-    realEstate?: { heroHeading?: string; heroSubtitle?: string };
+    structural?: { heroHeading?: string; heroSubtitle?: string };
+    ml?: { heroHeading?: string; heroSubtitle?: string };
+    threeD?: { heroHeading?: string; heroSubtitle?: string };
   };
 };
 
+const imgProjection = `{
+  asset-> { _id, url, metadata { dimensions } },
+  alt
+}`;
+
+const fileProjection = `{
+  asset-> { _id, url, originalFilename }
+}`;
+
+const toolkitItemProjection = `{
+  name,
+  icon ${imgProjection}
+}`;
+
 export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
   ...,
+  aboutPhoto ${imgProjection},
+  academicCv ${fileProjection},
+  professionalCv ${fileProjection},
+  toolkitColumn1Items[] ${toolkitItemProjection},
+  toolkitColumn2Items[] ${toolkitItemProjection},
+  toolkitColumn3Items[] ${toolkitItemProjection},
   pages {
-    architectural { heroHeading, heroSubtitle },
-    sculptor { heroHeading, heroSubtitle },
-    realEstate { heroHeading, heroSubtitle }
+    structural { heroHeading, heroSubtitle },
+    ml { heroHeading, heroSubtitle },
+    threeD { heroHeading, heroSubtitle }
   }
 }`;
 
 export const getSiteSettings = cache(async (): Promise<SiteSettings | null> => {
-  return client.fetch(siteSettingsQuery);
+  try {
+    return await client.fetch(siteSettingsQuery);
+  } catch {
+    return null;
+  }
 });
+
+// ─── Projects ────────────────────────────────────────────────────────
 
 export type FeaturedProject = Project;
 
+const projectProjection = `{
+  _id, title, slug, shortDescription, description, overview,
+  category, subcategory, "displayOrder": order, client, location, year,
+  projectType, tools, videoUrl, panoramaUrl, githubUrl, youtubeVideoId,
+  progressPdfUrl, featured,
+  videoFile { asset-> { url } },
+  model3d { asset-> { url } },
+  mainImage { asset-> { _id, url, metadata { dimensions } } },
+  gallery[] { asset-> { _id, url, metadata { dimensions } } },
+  panorama[] { asset-> { _id, url, metadata { dimensions } } }
+}`;
+
 export async function getFeaturedProjects(): Promise<FeaturedProject[]> {
-  return client.fetch(
-    `*[_type == "project" && featured == true] | order(order asc) [0...6] {
-      _id,
-      title,
-      slug,
-      shortDescription,
-      description,
-      overview,
-      category,
-      subcategory,
-      "displayOrder": order,
-      client,
-      location,
-      year,
-      projectType,
-      tools,
-      videoUrl,
-      panoramaUrl,
-      videoFile { asset-> { url } },
-      model3d { asset-> { url } },
-      mainImage { asset-> { _id, url, metadata { dimensions } } },
-      gallery[] { asset-> { _id, url, metadata { dimensions } } },
-      panorama[] { asset-> { _id, url, metadata { dimensions } } }
-    }`,
-    {},
-    { next: { revalidate: 60 } }
-  );
+  try {
+    return await client.fetch(
+      `*[_type == "project" && featured == true] | order(order asc) [0...6] ${projectProjection}`,
+      {},
+      { next: { revalidate: 60 } }
+    );
+  } catch {
+    return [];
+  }
+}
+
+export async function getAllProjects(): Promise<FeaturedProject[]> {
+  try {
+    return await client.fetch(
+      `*[_type == "project"] | order(order asc) ${projectProjection}`,
+      {},
+      { next: { revalidate: 60 } }
+    );
+  } catch {
+    return [];
+  }
 }
 
 export async function getProjectsByCategory(
   category: string
 ): Promise<FeaturedProject[]> {
-  return client.fetch(
-    `*[_type == "project" && category == $category] | order(order asc) {
-      _id, title, slug, category, subcategory, description, shortDescription,
-      overview, client, location, year, projectType, tools, videoUrl, panoramaUrl, "displayOrder": order,
-      videoFile { asset-> { url } },
-      model3d { asset-> { url } },
-      mainImage { asset-> { _id, url, metadata { dimensions } } },
-      gallery[] { asset-> { _id, url, metadata { dimensions } } },
-      panorama[] { asset-> { _id, url, metadata { dimensions } } }
-    }`,
-    { category },
-    { next: { revalidate: 60 } }
-  );
+  try {
+    return await client.fetch(
+      `*[_type == "project" && category == $category] | order(order asc) ${projectProjection}`,
+      { category },
+      { next: { revalidate: 60 } }
+    );
+  } catch {
+    return [];
+  }
 }
 
-export type RawTeamMember = TeamMember;
+// ─── Publications ────────────────────────────────────────────────────
 
-export async function getTeamMembers(): Promise<RawTeamMember[]> {
-  return client.fetch(
-    `*[_type == "teamMember"] | order(_createdAt asc) {
-      _id,
-      name,
-      role,
-      bio,
-      photo {
-        asset-> {
-          _id,
-          url,
-          metadata {
-            dimensions
-          }
-        },
-        alt
-      },
-      linkedinUrl
-    }`,
-    {},
-    { next: { revalidate: 60 } }
-  );
+export async function getPublications(): Promise<Publication[]> {
+  try {
+    return await client.fetch(
+      `*[_type == "publication"] | order(order asc, year desc) {
+        _id, title, authors, venue, year, status, url, abstract, order
+      }`,
+      {},
+      { next: { revalidate: 60 } }
+    );
+  } catch {
+    return [];
+  }
 }
 
-export type SanityProperty = Property;
+// ─── Testimonials ────────────────────────────────────────────────────
 
-export async function getProperties(): Promise<SanityProperty[]> {
-  return client.fetch(
-    `*[_type == "property" && available == true] | order(_createdAt desc) {
-      _id, title, slug, description, shortDescription,
-      images[] {
-        asset-> {
-          _id,
-          url,
-          metadata {
-            dimensions
-          }
-        },
-        alt
-      },
-      videoUrl, panoramaUrl, location, bedrooms, bathrooms,
-      pricePerNight, available, amenities, whatsappNumber, phoneNumber
-    }`,
-    {},
-    { next: { revalidate: 60 } }
-  );
+export async function getTestimonials(): Promise<Testimonial[]> {
+  try {
+    return await client.fetch(
+      `*[_type == "testimonial"] | order(order asc, _createdAt asc) {
+        _id, quote, name, role, order
+      }`,
+      {},
+      { next: { revalidate: 60 } }
+    );
+  } catch {
+    return [];
+  }
+}
+
+// ─── Gallery ─────────────────────────────────────────────────────────
+
+export async function getGalleryGroups(): Promise<GalleryGroup[]> {
+  try {
+    return await client.fetch(
+      `*[_type == "galleryGroup"] | order(order asc, _createdAt asc) {
+        _id, name, order,
+        items[] {
+          _key, _type,
+          caption,
+          youtubeUrl,
+          image ${imgProjection}
+        }
+      }`,
+      {},
+      { next: { revalidate: 60 } }
+    );
+  } catch {
+    return [];
+  }
 }

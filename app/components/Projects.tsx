@@ -9,21 +9,16 @@ import { useSwipe } from "@/app/hooks/useSwipe";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type Category =
-  | "architectural-structural"
-  | "3d-design"
-  | "real-estate-construction";
-
-const CATEGORY_LABELS: Record<Category, string> = {
-  "architectural-structural": "Architectural & Structural",
+const CATEGORY_LABELS: Record<string, string> = {
+  "structural-engineering": "Structural Engineering",
+  "ml-research": "ML & Research",
   "3d-design": "3D Design",
-  "real-estate-construction": "Real Estate & Construction",
 };
 
-const CATEGORY_HREFS: Record<Category, string> = {
-  "architectural-structural": "/work/architectural-structural",
-  "3d-design": "/work/sculptor",
-  "real-estate-construction": "/services/real-estate",
+const CATEGORY_HREFS: Record<string, string> = {
+  "structural-engineering": "/work/structural-engineering",
+  "ml-research": "/work/ml-research",
+  "3d-design": "/work/3d-design",
 };
 
 function EmptyState() {
@@ -116,7 +111,7 @@ export default function Projects({ projects }: { projects: SanityProject[] }) {
     <section
       ref={sectionRef}
       id="projects"
-      className="relative bg-anthracite text-cream py-10 md:py-24 lg:py-28 px-6 md:px-8 lg:px-16 overflow-hidden"
+      className="relative bg-white text-dark-text py-10 md:py-24 lg:py-28 px-6 md:px-8 lg:px-16 overflow-hidden"
     >
       {/* Decorative section number */}
       <div className="section-number" data-number="03" aria-hidden="true" />
@@ -130,9 +125,9 @@ export default function Projects({ projects }: { projects: SanityProject[] }) {
           <div className="overflow-hidden">
             <h2
               ref={h2LineRef}
-              className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-cream"
+              className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-dark-text"
             >
-              All Featured <span className="text-gold">Projects</span>
+              Featured <span className="text-gold">Projects</span>
             </h2>
           </div>
         </div>
@@ -146,7 +141,7 @@ export default function Projects({ projects }: { projects: SanityProject[] }) {
             <div className="md:hidden" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
               <div className="grid">
                 {featured.map((project, i) => {
-                  const cat = project.category as Category;
+                  const cat = project.category;
                   const imgSrc = project.mainImage?.asset?.url ?? null;
                   return (
                     <div
@@ -187,7 +182,7 @@ export default function Projects({ projects }: { projects: SanityProject[] }) {
                             <span className="text-gold text-[10px] tracking-[0.25em] uppercase">
                               {CATEGORY_LABELS[cat] ?? cat}
                             </span>
-                            <h3 className="text-2xl font-bold text-cream leading-tight">
+                            <h3 className="text-2xl font-bold text-white leading-tight">
                               {project.title}
                             </h3>
                             <span
@@ -234,7 +229,7 @@ export default function Projects({ projects }: { projects: SanityProject[] }) {
             {/* Desktop: existing grid layout — completely unchanged */}
             <div ref={gridRef} className="hidden md:grid md:grid-cols-3 gap-6">
               {featured.map((project) => {
-                const cat = project.category as Category;
+                const cat = project.category;
                 const imgSrc = project.mainImage?.asset?.url ?? null;
 
                 return (
@@ -275,7 +270,7 @@ export default function Projects({ projects }: { projects: SanityProject[] }) {
                           <span className="text-gold text-[10px] tracking-[0.25em] uppercase">
                             {CATEGORY_LABELS[cat] ?? cat}
                           </span>
-                          <h3 className="text-2xl md:text-3xl font-bold text-cream leading-tight">
+                          <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight">
                             {project.title}
                           </h3>
                           <span
