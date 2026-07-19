@@ -340,20 +340,24 @@ export default function Projects({ projects }: { projects: SanityProject[] }) {
             <CtaRing />
             ML, ROBOTICS &amp; RESEARCH →
           </Link>
-          <Link
-            href="/work/structural-engineering"
+          <a
+            href="https://theanthracite.com/work/architectural-structural"
+            target="_blank"
+            rel="noopener noreferrer"
             className="relative flex items-center justify-center gap-3 text-center border border-gold bg-gold/10 hover:bg-gold hover:text-surface text-gold font-semibold px-6 py-4 text-sm tracking-[0.2em] uppercase transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
           >
             <CtaRing />
             STRUCTURAL ENGINEERING PROJECTS →
-          </Link>
-          <Link
-            href="/work/3d-design"
+          </a>
+          <a
+            href="https://theanthracite.com/work/sculptor"
+            target="_blank"
+            rel="noopener noreferrer"
             className="relative flex items-center justify-center gap-3 text-center border border-gold bg-gold/10 hover:bg-gold hover:text-surface text-gold font-semibold px-6 py-4 text-sm tracking-[0.2em] uppercase transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
           >
             <CtaRing />
             3D DESIGN PROJECTS →
-          </Link>
+          </a>
         </div>
       </div>
     </section>

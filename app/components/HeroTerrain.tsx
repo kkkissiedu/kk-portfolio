@@ -11,9 +11,9 @@
  * toward the cursor. Desktop-only — the video hero remains the fallback.
  */
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { EffectComposer, Bloom, Vignette, Noise } from "@react-three/postprocessing";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 
 type PointerRef = React.MutableRefObject<{ x: number; y: number }>;
@@ -202,9 +202,9 @@ function makeLineUniforms(bright: number) {
 function Terrain({ pointerRef }: { pointerRef: PointerRef }) {
   const { camera } = useThree();
 
-  const mainGeo = useMemo(() => buildGridGeometry(44, 34, 110, 40), []);
-  const farGeo = useMemo(() => buildGridGeometry(20, 16, 60, 20), []);
-  const pointsGeo = useMemo(() => buildSurveyPoints(420), []);
+  const mainGeo = useMemo(() => buildGridGeometry(36, 28, 92, 34), []);
+  const farGeo = useMemo(() => buildGridGeometry(16, 12, 48, 16), []);
+  const pointsGeo = useMemo(() => buildSurveyPoints(360), []);
 
   const mainUniforms = useMemo(() => makeLineUniforms(0.85), []);
   const farUniforms = useMemo(() => makeLineUniforms(0.28), []);
@@ -295,10 +295,16 @@ function Terrain({ pointerRef }: { pointerRef: PointerRef }) {
 
 // ── Canvas wrapper ────────────────────────────────────────────────────────────
 
+// Static film-grain tile (SVG turbulence) — replaces the per-frame Noise pass.
+const GRAIN_URI =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E";
+
 export default function HeroTerrain() {
   // Canvas is pointer-events:none behind the hero content — track the cursor
   // at window level instead of relying on canvas events.
   const pointerRef = useRef({ x: 0, y: 0 });
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(true);
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -309,25 +315,62 @@ export default function HeroTerrain() {
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
+  // Stop rendering entirely once the hero is scrolled out of view —
+  // otherwise the GPU keeps burning 60fps for the whole session.
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.02 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   return (
-    <Canvas
-      flat
-      dpr={[1, 1.5]}
-      camera={{ position: [0, 4.6, 7.5], fov: 50, near: 0.1, far: 60 }}
-      gl={{ antialias: true, alpha: true }}
-      style={{ pointerEvents: "none" }}
-      aria-hidden
-      onCreated={({ scene }) => {
-        scene.fog = new THREE.Fog("#10151c", 10, 30);
-      }}
-    >
-      <color attach="background" args={["#10151c"]} />
-      <Terrain pointerRef={pointerRef} />
-      <EffectComposer>
-        <Bloom intensity={0.6} luminanceThreshold={0.18} mipmapBlur radius={0.7} />
-        <Vignette eskil={false} offset={0.22} darkness={0.72} />
-        <Noise opacity={0.04} />
-      </EffectComposer>
-    </Canvas>
+    <div ref={wrapRef} className="absolute inset-0">
+      <Canvas
+        flat
+        frameloop={inView ? "always" : "never"}
+        dpr={[1, 1.25]}
+        camera={{ position: [0, 4.6, 7.5], fov: 50, near: 0.1, far: 60 }}
+        gl={{
+          antialias: false,
+          alpha: true,
+          powerPreference: "high-performance",
+          stencil: false,
+        }}
+        style={{ pointerEvents: "none" }}
+        aria-hidden
+        onCreated={({ scene }) => {
+          scene.fog = new THREE.Fog("#10151c", 10, 30);
+        }}
+      >
+        <color attach="background" args={["#10151c"]} />
+        <Terrain pointerRef={pointerRef} />
+        {/* Bloom only, at reduced internal resolution — vignette and grain
+            moved to free CSS overlays below */}
+        <EffectComposer multisampling={0}>
+          <Bloom intensity={0.6} luminanceThreshold={0.18} mipmapBlur radius={0.7} height={300} />
+        </EffectComposer>
+      </Canvas>
+
+      {/* CSS vignette (free) */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 90% 80% at 50% 45%, transparent 55%, rgba(16,21,28,0.6) 100%)",
+        }}
+        aria-hidden
+      />
+      {/* CSS film grain (free, static tile) */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.05]"
+        style={{ backgroundImage: `url("${GRAIN_URI}")` }}
+        aria-hidden
+      />
+    </div>
   );
 }
