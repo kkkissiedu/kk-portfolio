@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand colors — Deep Navy, Light Mode (Zebra) */
-  --color-anthracite: #0a1a33; /* dark navy — Hero overlay, Footer */
-  --color-cream: #f4f6fa; /* off-white alt section bg */
+  /* Brand colors — Signal Cyan: graphite + instrument cyan, Light Mode (Zebra) */
+  --color-anthracite: #10151c; /* graphite — Hero overlay, Footer */
+  --color-cream: #f3f6f7; /* cool off-white alt section bg */
   --color-surface: #ffffff; /* white alt section bg */
-  --color-dark-text: #1a1f2e; /* body text */
-  --color-gold: #0f2c5c; /* primary navy accent (semantic name retained) */
-  --color-gold-highlight: #1b4396; /* accent hover */
-  --color-gold-dark: #0a1f44; /* darker accent */
-  --color-gold-heading: #0a1a33; /* heading-tone accent */
+  --color-dark-text: #171c24; /* body text */
+  --color-gold: #0e7490; /* primary cyan accent (semantic name retained) */
+  --color-gold-highlight: #06b6d4; /* accent hover */
+  --color-gold-dark: #155e75; /* darker accent */
+  --color-gold-heading: #10151c; /* heading-tone accent */
 
   /* Typography */
   --font-heading: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
@@ -85,11 +85,11 @@ h6 {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    #0f2c5c 20%,
-    #1b4396 40%,
-    #2563eb 50%,
-    #1b4396 60%,
-    #0f2c5c 80%,
+    #0e7490 20%,
+    #06b6d4 40%,
+    #22d3ee 50%,
+    #06b6d4 60%,
+    #0e7490 80%,
     transparent 100%
   );
   background-size: 100% 100%;
@@ -107,8 +107,8 @@ h6 {
 
 /* Selection */
 ::selection {
-  background-color: #0f2c5c;
-  color: #f4f6fa;
+  background-color: #0e7490;
+  color: #f3f6f7;
 }
 
 /* Decorative section numbers — content via ::before so screen readers skip them */
@@ -127,7 +127,7 @@ h6 {
   font-family: var(--font-heading);
   font-size: 180px;
   font-weight: 700;
-  color: #0f2c5c;
+  color: #0e7490;
   line-height: 1;
   display: block;
 }
