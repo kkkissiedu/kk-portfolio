@@ -1,7 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import gsap from "gsap";
+
+// Interactive 3D terrain-scan hero — loaded only on capable desktop devices;
+// the video below remains the fallback everywhere else.
+const HeroTerrain = dynamic(() => import("./HeroTerrain"), { ssr: false });
 
 type HeroProps = {
   heroOverline?: string;
@@ -27,7 +32,19 @@ export default function Hero({
   );
 
   const containerRef = useRef<HTMLElement>(null);
+  const [use3D, setUse3D] = useState(false);
   const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
+
+  // 3D lattice only on desktop fine-pointer devices without reduced motion
+  useEffect(() => {
+    const capable = window.matchMedia(
+      "(min-width: 768px) and (pointer: fine) and (prefers-reduced-motion: no-preference)"
+    );
+    const update = () => setUse3D(capable.matches);
+    update();
+    capable.addEventListener("change", update);
+    return () => capable.removeEventListener("change", update);
+  }, []);
   const overlineRef = useRef<HTMLParagraphElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
@@ -81,30 +98,43 @@ export default function Hero({
       ref={containerRef}
       className="relative min-h-screen flex flex-col items-center justify-center bg-anthracite overflow-hidden"
     >
-      <video
-        className="absolute inset-0 w-full h-full object-cover z-[0] pointer-events-none"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="none"
-        poster="/hero-poster.jpg"
-        aria-hidden
-        style={{ filter: "brightness(0.45) saturate(0.7)" }}
-      >
-        <source src="/hero.webm" type="video/webm" />
-        <source src="/hero.mp4" type="video/mp4" />
-      </video>
+      {use3D ? (
+        <div
+          className="absolute inset-0 z-[0] pointer-events-none [&_canvas]:!w-full [&_canvas]:!h-full [&_canvas]:!block"
+          aria-hidden
+        >
+          <HeroTerrain />
+        </div>
+      ) : (
+        <video
+          className="absolute inset-0 w-full h-full object-cover z-[0] pointer-events-none"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          poster="/hero-poster.jpg"
+          aria-hidden
+          style={{ filter: "brightness(0.45) saturate(0.7)" }}
+        >
+          <source src="/hero.webm" type="video/webm" />
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+      )}
 
-      {/* Dark overlay for legibility */}
-      <div className="absolute inset-0 bg-black/40 z-[2]" aria-hidden />
+      {/* Dark overlay for legibility — lighter over the 3D scene, which is
+          already dark and carries its own vignette */}
+      <div
+        className={`absolute inset-0 z-[2] ${use3D ? "bg-black/15" : "bg-black/40"}`}
+        aria-hidden
+      />
 
       {/* Subtle radial glow */}
       <div
         className="absolute inset-0 z-[3] pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 70% 60% at 50% 40%, rgba(15,44,92,0.18) 0%, transparent 70%)",
+            "radial-gradient(ellipse 70% 60% at 50% 40%, rgba(14,116,144,0.18) 0%, transparent 70%)",
         }}
         aria-hidden
       />
