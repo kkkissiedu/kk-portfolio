@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useProjectModal, type SanityProject } from "@/context/ProjectModalContext";
 import { useSwipe } from "@/app/hooks/useSwipe";
+import Link from "next/link";
+import CtaRing from "./CtaRing";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,6 +40,7 @@ export default function Projects({ projects }: { projects: SanityProject[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const h2LineRef = useRef<HTMLDivElement>(null);
+  const ctaRowRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [prefersReducedMotion] = useState(() =>
@@ -75,6 +78,38 @@ export default function Projects({ projects }: { projects: SanityProject[] }) {
           },
         }
       );
+
+      // Category CTA buttons: gradient ring draws around each button,
+      // led by a glowing head, then fades
+      if (ctaRowRef.current) {
+        const rings = ctaRowRef.current.querySelectorAll<SVGRectElement>(".cta-ring");
+        const heads = ctaRowRef.current.querySelectorAll<SVGRectElement>(".cta-ring-head");
+        if (rings.length) {
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: ctaRowRef.current,
+              start: "top 92%",
+              toggleActions: "restart none restart none",
+            },
+          });
+          tl.fromTo(
+            rings,
+            { strokeDashoffset: 1, opacity: 1 },
+            { strokeDashoffset: 0, duration: 0.9, ease: "power2.inOut", stagger: 0.25 }
+          )
+            .fromTo(
+              heads,
+              { strokeDashoffset: 1, opacity: 1 },
+              { strokeDashoffset: 0, duration: 0.9, ease: "power2.inOut", stagger: 0.25 },
+              0
+            )
+            .to(
+              [...Array.from(rings), ...Array.from(heads)],
+              { opacity: 0, duration: 0.6, ease: "power2.out" },
+              "-=0.15"
+            );
+        }
+      }
     }, sectionRef);
     return () => ctx.revert();
   }, []);
@@ -139,89 +174,93 @@ export default function Projects({ projects }: { projects: SanityProject[] }) {
           <>
             {/* Mobile: carousel — one card at a time */}
             <div className="md:hidden" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-              <div className="grid">
-                {featured.map((project, i) => {
-                  const cat = project.category;
-                  const imgSrc = project.mainImage?.asset?.url ?? null;
-                  return (
-                    <div
-                      key={project._id}
-                      data-gsap="true"
-                      className={`col-start-1 row-start-1 fw-card group relative overflow-hidden cursor-pointer w-full ${
-                        i === currentIndex
-                          ? `pointer-events-auto ${prefersReducedMotion ? '' : 'slide-enter'}`
-                          : 'opacity-0 pointer-events-none'
-                      }`}
-                      onClick={() => i === currentIndex && openModal(project)}
-                      role="button"
-                      tabIndex={i === currentIndex ? 0 : -1}
-                      onKeyDown={(e) => {
-                        if (i === currentIndex && (e.key === "Enter" || e.key === " ")) {
-                          e.preventDefault();
-                          openModal(project);
-                        }
-                      }}
-                      aria-label={`Open ${project.title}`}
-                      aria-hidden={i !== currentIndex}
-                    >
-                      <div className="relative w-full aspect-[3/4]">
-                        {imgSrc ? (
-                          <Image
-                            src={imgSrc}
-                            alt={project.title}
-                            fill
-                            className="object-cover transition-transform duration-[400ms] ease-out group-hover:scale-105"
-                            sizes="100vw"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 bg-[#1a1a1a]" />
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
-                        <div className="absolute inset-x-0 bottom-0 opacity-100">
-                          <div className="p-6 flex flex-col gap-3">
-                            <span className="text-gold text-[10px] tracking-[0.25em] uppercase">
-                              {CATEGORY_LABELS[cat] ?? cat}
-                            </span>
-                            <h3 className="text-2xl font-bold text-white leading-tight">
-                              {project.title}
-                            </h3>
-                            <span
-                              className="mt-3 inline-flex items-center justify-center min-h-[44px] border border-gold text-gold px-4 text-xs tracking-widest uppercase self-start"
-                              aria-hidden="true"
-                            >
-                              VIEW DETAILS →
-                            </span>
+              <div className="relative">
+                <div className="grid">
+                  {featured.map((project, i) => {
+                    const cat = project.category;
+                    const imgSrc = project.mainImage?.asset?.url ?? null;
+                    return (
+                      <div
+                        key={project._id}
+                        data-gsap="true"
+                        className={`col-start-1 row-start-1 fw-card group relative overflow-hidden cursor-pointer w-full ${
+                          i === currentIndex
+                            ? `pointer-events-auto ${prefersReducedMotion ? '' : 'slide-enter'}`
+                            : 'opacity-0 pointer-events-none'
+                        }`}
+                        onClick={() => i === currentIndex && openModal(project)}
+                        role="button"
+                        tabIndex={i === currentIndex ? 0 : -1}
+                        onKeyDown={(e) => {
+                          if (i === currentIndex && (e.key === "Enter" || e.key === " ")) {
+                            e.preventDefault();
+                            openModal(project);
+                          }
+                        }}
+                        aria-label={`Open ${project.title}`}
+                        aria-hidden={i !== currentIndex}
+                      >
+                        <div className="relative w-full aspect-[3/4]">
+                          {imgSrc ? (
+                            <Image
+                              src={imgSrc}
+                              alt={project.title}
+                              fill
+                              className="object-cover transition-transform duration-[400ms] ease-out group-hover:scale-105"
+                              sizes="100vw"
+                            />
+                          ) : (
+                            <div className="absolute inset-0 bg-[#1a1a1a]" />
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
+                          <div className="absolute inset-x-0 bottom-0 opacity-100">
+                            <div className="p-6 flex flex-col gap-3">
+                              <span className="text-gold text-[10px] tracking-[0.25em] uppercase">
+                                {CATEGORY_LABELS[cat] ?? cat}
+                              </span>
+                              <h3 className="text-2xl font-bold text-white leading-tight">
+                                {project.title}
+                              </h3>
+                              <span
+                                className="mt-3 inline-flex items-center justify-center min-h-[44px] border border-gold text-gold px-4 text-xs tracking-widest uppercase self-start"
+                                aria-hidden="true"
+                              >
+                                VIEW DETAILS →
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+                {featured.length > 1 && (
+                  <>
+                    <button
+                      onClick={goToPrev}
+                      className="absolute -left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 border border-gold/40 bg-surface/70 backdrop-blur-sm text-gold hover:bg-gold hover:text-surface transition-colors flex items-center justify-center"
+                      aria-label="Previous project"
+                    >
+                      ←
+                    </button>
+                    <button
+                      onClick={goToNext}
+                      className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 border border-gold/40 bg-surface/70 backdrop-blur-sm text-gold hover:bg-gold hover:text-surface transition-colors flex items-center justify-center"
+                      aria-label="Next project"
+                    >
+                      →
+                    </button>
+                  </>
+                )}
               </div>
               {featured.length > 1 && (
-                <div className="flex items-center justify-center gap-4 mt-6">
-                  <button
-                    onClick={goToPrev}
-                    className="w-10 h-10 border border-gold/40 text-gold hover:bg-gold hover:text-anthracite transition-colors flex items-center justify-center"
-                    aria-label="Previous project"
-                  >
-                    ←
-                  </button>
-                  <div className="flex gap-2">
-                    {featured.map((_, i) => (
-                      <div
-                        key={i}
-                        className={`w-2 h-2 rounded-full transition-colors ${i === currentIndex ? "bg-gold" : "bg-gold/30"}`}
-                      />
-                    ))}
-                  </div>
-                  <button
-                    onClick={goToNext}
-                    className="w-10 h-10 border border-gold/40 text-gold hover:bg-gold hover:text-anthracite transition-colors flex items-center justify-center"
-                    aria-label="Next project"
-                  >
-                    →
-                  </button>
+                <div className="flex items-center justify-center gap-2 mt-6">
+                  {featured.map((_, i) => (
+                    <div
+                      key={i}
+                      className={`w-2 h-2 rounded-full transition-colors ${i === currentIndex ? "bg-gold" : "bg-gold/30"}`}
+                    />
+                  ))}
                 </div>
               )}
             </div>
@@ -288,6 +327,34 @@ export default function Projects({ projects }: { projects: SanityProject[] }) {
             </div>
           </>
         )}
+
+        {/* Category page links */}
+        <div
+          ref={ctaRowRef}
+          className="mt-10 md:mt-12 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4"
+        >
+          <Link
+            href="/work/ml-research"
+            className="relative flex items-center justify-center gap-3 text-center border border-gold bg-gold/10 hover:bg-gold hover:text-surface text-gold font-semibold px-6 py-4 text-sm tracking-[0.2em] uppercase transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+          >
+            <CtaRing />
+            ML, ROBOTICS &amp; RESEARCH →
+          </Link>
+          <Link
+            href="/work/structural-engineering"
+            className="relative flex items-center justify-center gap-3 text-center border border-gold bg-gold/10 hover:bg-gold hover:text-surface text-gold font-semibold px-6 py-4 text-sm tracking-[0.2em] uppercase transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+          >
+            <CtaRing />
+            STRUCTURAL ENGINEERING PROJECTS →
+          </Link>
+          <Link
+            href="/work/3d-design"
+            className="relative flex items-center justify-center gap-3 text-center border border-gold bg-gold/10 hover:bg-gold hover:text-surface text-gold font-semibold px-6 py-4 text-sm tracking-[0.2em] uppercase transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+          >
+            <CtaRing />
+            3D DESIGN PROJECTS →
+          </Link>
+        </div>
       </div>
     </section>
   );
