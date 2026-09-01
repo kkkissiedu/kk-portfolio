@@ -68,9 +68,9 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 function getTabs(project: SanityProject): TabId[] {
   const tabs: TabId[] = [];
-  if (project.gallery && project.gallery.length > 0) tabs.push("images");
+  if (withAssets(project.gallery).length > 0) tabs.push("images");
   if (project.videoUrl || project.videoFile?.asset?.url) tabs.push("video");
-  if (project.panorama && project.panorama.length > 0) tabs.push("panorama");
+  if (withAssets(project.panorama).length > 0) tabs.push("panorama");
   if (project.model3d?.asset?.url) tabs.push("3d");
   return tabs;
 }
@@ -93,6 +93,13 @@ function extractText(blocks: unknown[]): string {
 
 function sanityImageSrc(img: ResolvedImage): string {
   return img.asset.url;
+}
+
+// An image added to a gallery in Studio but left without an upload resolves to
+// { asset: null }. Reading .url off that threw and took the whole modal down
+// with it, so drop those entries instead of trying to render them.
+function withAssets(images?: ResolvedImage[]): ResolvedImage[] {
+  return (images ?? []).filter((img) => Boolean(img?.asset?.url));
 }
 
 // ─── Spinner ──────────────────────────────────────────────────────────────────
@@ -564,9 +571,8 @@ export default function ProjectModal() {
               style={{ minHeight: 380 }}
             >
               {activeTab === "images" &&
-                activeProject.gallery &&
-                activeProject.gallery.length > 0 && (
-                  <ImagesTab gallery={activeProject.gallery} />
+                withAssets(activeProject.gallery).length > 0 && (
+                  <ImagesTab gallery={withAssets(activeProject.gallery)} />
                 )}
 
               {activeTab === "video" &&
@@ -576,9 +582,8 @@ export default function ProjectModal() {
                 )}
 
               {activeTab === "panorama" &&
-                activeProject.panorama &&
-                activeProject.panorama.length > 0 && (
-                  <PanoramaTab panorama={activeProject.panorama} />
+                withAssets(activeProject.panorama).length > 0 && (
+                  <PanoramaTab panorama={withAssets(activeProject.panorama)} />
                 )}
 
               {activeTab === "3d" && activeProject.model3d?.asset?.url && (
