@@ -35,12 +35,20 @@ async function main() {
   );
   console.log("  ", posterAsset._id);
 
-  // Idempotent: drop any existing entry pointing at this same asset before
-  // prepending, so re-running does not duplicate the poster.
+  // Poster frames uploaded by earlier runs of this script. Each upload gets a
+  // fresh asset id, so matching only on the current id would leave the old
+  // ones stranded in the gallery.
+  const SUPERSEDED_POSTERS = [
+    "image-109eb64dc1687909b06a3c6e9fb9f3d8b89a0106-1280x720-jpg", // Test6 reel
+    "image-45a75e72d2534b77bbad631162b90447d9771698-1280x720-jpg", // untrimmed YOLO reel
+  ];
+
+  // Idempotent: drop this asset and any superseded poster before prepending.
   type GalleryItem = { asset?: { _ref?: string } };
-  const existing = ((doc.gallery as GalleryItem[]) ?? []).filter(
-    (g) => g?.asset?._ref !== posterAsset._id
-  );
+  const existing = ((doc.gallery as GalleryItem[]) ?? []).filter((g) => {
+    const ref = g?.asset?._ref;
+    return ref !== posterAsset._id && !SUPERSEDED_POSTERS.includes(ref ?? "");
+  });
   const gallery = [
     {
       _type: "image",
