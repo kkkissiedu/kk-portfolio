@@ -1,10 +1,10 @@
 // GhanaCrack media.
 //
-// The 2x2 model-comparison reel is kept as a still poster frame in the
-// gallery. The MP4 itself is NOT attached: OpenCV could only write MPEG-4
-// Part 2 (mp4v) on this machine, which browsers refuse to decode
-// (MEDIA_ELEMENT_ERROR code 4). A YouTube link via the project's videoUrl /
-// youtubeVideoId field is the intended route for the moving version.
+// The 2x2 YOLO FP16 comparison reel (YOLO26-S/N, YOLO11-M/S on Test7) is
+// attached as an H.264 MP4, encoded via the imageio-ffmpeg bundled binary.
+// A still poster frame from it also leads the gallery. FPS shown on the
+// video is inference-only on an RTX 4070 laptop GPU, labelled as such.
+//
 //
 // Run: npx sanity exec scripts/attach-ghanacrack-reel.ts --with-user-token
 import { getCliClient } from "sanity/cli";
@@ -19,6 +19,7 @@ const ASSET_DIR =
   "C:/Users/kissi/AppData/Local/Temp/claude/D--WORK-FOLDER-THE-ANTHRACITE-WEBSITE/" +
   "231cbe60-9bab-4646-b111-b85a93edb803/scratchpad/robot_assets";
 const POSTER = "model-comparison-poster.jpg";
+const VIDEO = "yolo_fp16_comparison.mp4";
 
 async function main() {
   const doc = await client.fetch<{ _id: string; gallery?: unknown[] } | null>(
@@ -49,13 +50,26 @@ async function main() {
     ...existing,
   ];
 
+  console.log("Uploading video...");
+  const videoAsset = await client.assets.upload(
+    "file",
+    fs.readFileSync(path.join(ASSET_DIR, VIDEO)),
+    { filename: VIDEO, contentType: "video/mp4" }
+  );
+  console.log("  ", videoAsset._id);
+
   await client
     .patch(doc._id)
-    .set({ gallery })
-    .unset(["videoFile"])   // browser-incompatible codec; use YouTube instead
+    .set({
+      gallery,
+      videoFile: {
+        _type: "file",
+        asset: { _type: "reference", _ref: videoAsset._id },
+      },
+    })
     .commit();
 
-  console.log("Patched", doc._id, "- gallery now", gallery.length, "images; videoFile unset");
+  console.log("Patched", doc._id, "- gallery", gallery.length, "images + video attached");
 }
 
 main().catch((e) => {
