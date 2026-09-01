@@ -2,9 +2,12 @@
 //
 // The 2x2 YOLO FP16 comparison reel (YOLO26-S/N, YOLO11-M/S on Test7) is
 // attached as an H.264 MP4, encoded via the imageio-ffmpeg bundled binary.
-// A still poster frame from it also leads the gallery. FPS shown on the
-// video is inference-only on an RTX 4070 laptop GPU, labelled as such.
+// FPS shown on the video is inference-only on an RTX 4070 laptop GPU,
+// labelled as such.
 //
+// The gallery is no longer touched here. It holds single-image overlays only
+// (see replace-ghanacrack-images.ts); a still frame of this 2x2 reel is a
+// tiled image and does not belong there.
 //
 // Run: npx sanity exec scripts/attach-ghanacrack-reel.ts --with-user-token
 import { getCliClient } from "sanity/cli";
@@ -18,45 +21,13 @@ const client = getCliClient({ apiVersion: "2025-08-15" });
 const ASSET_DIR =
   "C:/Users/kissi/AppData/Local/Temp/claude/D--WORK-FOLDER-THE-ANTHRACITE-WEBSITE/" +
   "231cbe60-9bab-4646-b111-b85a93edb803/scratchpad/robot_assets";
-const POSTER = "model-comparison-poster.jpg";
 const VIDEO = "yolo_fp16_comparison.mp4";
 
 async function main() {
-  const doc = await client.fetch<{ _id: string; gallery?: unknown[] } | null>(
-    `*[_type=='project' && slug.current=='ghanacrack-inspection-robot'][0]{_id, gallery}`
+  const doc = await client.fetch<{ _id: string } | null>(
+    `*[_type=='project' && slug.current=='ghanacrack-inspection-robot'][0]{_id}`
   );
   if (!doc) throw new Error("GhanaCrack project not found");
-
-  console.log("Uploading poster...");
-  const posterAsset = await client.assets.upload(
-    "image",
-    fs.readFileSync(path.join(ASSET_DIR, POSTER)),
-    { filename: POSTER }
-  );
-  console.log("  ", posterAsset._id);
-
-  // Poster frames uploaded by earlier runs of this script. Each upload gets a
-  // fresh asset id, so matching only on the current id would leave the old
-  // ones stranded in the gallery.
-  const SUPERSEDED_POSTERS = [
-    "image-109eb64dc1687909b06a3c6e9fb9f3d8b89a0106-1280x720-jpg", // Test6 reel
-    "image-45a75e72d2534b77bbad631162b90447d9771698-1280x720-jpg", // untrimmed YOLO reel
-  ];
-
-  // Idempotent: drop this asset and any superseded poster before prepending.
-  type GalleryItem = { asset?: { _ref?: string } };
-  const existing = ((doc.gallery as GalleryItem[]) ?? []).filter((g) => {
-    const ref = g?.asset?._ref;
-    return ref !== posterAsset._id && !SUPERSEDED_POSTERS.includes(ref ?? "");
-  });
-  const gallery = [
-    {
-      _type: "image",
-      _key: posterAsset._id,
-      asset: { _type: "reference", _ref: posterAsset._id },
-    },
-    ...existing,
-  ];
 
   console.log("Uploading video...");
   const videoAsset = await client.assets.upload(
@@ -69,7 +40,6 @@ async function main() {
   await client
     .patch(doc._id)
     .set({
-      gallery,
       videoFile: {
         _type: "file",
         asset: { _type: "reference", _ref: videoAsset._id },
@@ -77,7 +47,7 @@ async function main() {
     })
     .commit();
 
-  console.log("Patched", doc._id, "- gallery", gallery.length, "images + video attached");
+  console.log("Patched", doc._id, "- video attached");
 }
 
 main().catch((e) => {
