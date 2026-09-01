@@ -1,4 +1,11 @@
-@import "tailwindcss";
+/* source(none) disables Tailwind v4's automatic project-wide scanning, which
+   otherwise walks OLD_WEBSITE/, dist/ and .sanity/ (none are gitignored) and
+   chokes on escape sequences in that legacy markup. Sources are listed
+   explicitly instead. */
+@import "tailwindcss" source(none);
+@source "./";
+@source "../components";
+@source "../context";
 
 @theme {
   /* Brand colors — Signal Cyan: graphite + instrument cyan, Light Mode (Zebra) */
