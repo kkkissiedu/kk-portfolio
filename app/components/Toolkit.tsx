@@ -1,12 +1,53 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { ToolkitItemResolved } from "@/lib/sanity";
 
 gsap.registerPlugin(ScrollTrigger);
+
+// Logos live in public/toolkit. Most are the files the previous portfolio
+// shipped; the rest are simple-icons marks (CC0, painted with each brand's
+// hex) plus XGBoost's own project logo. Trademarks belong to their owners and
+// are used here only to identify tools actually used.
+//
+// A per-item icon uploaded in Studio still wins over this map. Anything with
+// no logo available (Lumion, TensorRT) renders as a name-only tile.
+const TOOL_LOGOS: Record<string, string> = {
+  "Autodesk Revit": "autodesk-revit.png",
+  AutoCAD: "autocad.png",
+  ProtaStructure: "protastructure.png",
+  "Tekla Structures": "tekla-structures.png",
+  ABAQUS: "abaqus.png",
+  "Autodesk Fusion": "autodesk-fusion.svg",
+  "Grasshopper (Rhino)": "grasshopper-rhino.png",
+  Python: "python.png",
+  PyTorch: "pytorch.png",
+  "scikit-learn": "scikit-learn.svg",
+  XGBoost: "xgboost.png",
+  OpenCV: "opencv.png",
+  "Ultralytics YOLO": "ultralytics-yolo.svg",
+  "NVIDIA Jetson": "nvidia-jetson.svg",
+  "ONNX Runtime": "onnx-runtime.svg",
+  NumPy: "numpy.png",
+  Optuna: "optuna.svg",
+  "Weights & Biases": "weights-and-biases.svg",
+  Blender: "blender.png",
+  ZBrush: "zbrush.png",
+  "Substance Painter": "substance-painter.png",
+  "Marmoset Toolbag": "marmoset-toolbag.png",
+  "Unreal Engine": "unreal-engine.png",
+  Unity: "unity.png",
+  "Adobe Photoshop": "adobe-photoshop.png",
+  "Adobe Illustrator": "adobe-illustrator.png",
+};
+
+function logoFor(item: ToolkitItemResolved): string | null {
+  if (item.icon?.asset?.url) return item.icon.asset.url;
+  const file = TOOL_LOGOS[item.name];
+  return file ? `/toolkit/${file}` : null;
+}
 
 type Props = {
   toolkitLabel?: string;
@@ -27,27 +68,28 @@ function ToolColumn({ title, items }: { title: string; items: ToolkitItemResolve
     <div>
       <h3 className="font-heading text-xl md:text-2xl font-bold text-gold mb-6 text-center">{title}</h3>
       <ul className="grid grid-cols-2 gap-3">
-        {items.map((item, i) => (
-          <li key={`${item.name}-${i}`}
-            className={`toolkit-item flex flex-col items-center justify-center gap-2 bg-white border border-dark-text/10 hover:border-gold transition-colors duration-200 ${
-              item.icon?.asset?.url ? "p-4" : "px-3 py-5 min-h-[74px]"
-            }`}>
-            {/* No initials placeholder when an item has no logo: too many of
-                these names share their first two letters (Autodesk Revit and
-                AutoCAD both gave AU, Adobe Photoshop and Adobe Illustrator both
-                gave AD), so the badge read as a bug. Name-only is deliberate. */}
-            {item.icon?.asset?.url && (
-              <div className="relative w-10 h-10 shrink-0">
-                <Image src={item.icon.asset.url} alt={item.name} fill className="object-contain" sizes="40px" />
-              </div>
-            )}
-            <p className={`text-center leading-tight ${
-              item.icon?.asset?.url
-                ? "text-xs text-dark-text/80"
-                : "text-sm text-dark-text/85 tracking-wide"
-            }`}>{item.name}</p>
-          </li>
-        ))}
+        {items.map((item, i) => {
+          const logo = logoFor(item);
+          return (
+            <li key={`${item.name}-${i}`}
+              className="toolkit-item flex flex-col items-center justify-center gap-2 p-4 min-h-[104px] bg-white border border-dark-text/10 hover:border-gold transition-colors duration-200">
+              {/* No initials placeholder for the few tools with no logo: too
+                  many of these names share their first two letters (Autodesk
+                  Revit and AutoCAD both gave AU), so the badge read as a bug. */}
+              {logo && (
+                <div className="relative w-10 h-10 shrink-0">
+                  {/* Plain img: these are local, already-sized assets, and one
+                      is an SVG, which next/image will not optimise without
+                      dangerouslyAllowSVG. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={logo} alt="" aria-hidden="true"
+                    className="w-full h-full object-contain" loading="lazy" />
+                </div>
+              )}
+              <p className="text-xs text-dark-text/80 text-center leading-tight">{item.name}</p>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
