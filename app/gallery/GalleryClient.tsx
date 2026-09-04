@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
+import Lightbox from "@/components/Lightbox";
 import type { GalleryGroup, GalleryItem } from "@/types/sanity";
 
 function getYouTubeEmbed(url: string): string | null {
@@ -10,14 +12,20 @@ function getYouTubeEmbed(url: string): string | null {
   return yt ? `https://www.youtube.com/embed/${yt[1]}?playsinline=1&rel=0` : null;
 }
 
-function GalleryMedia({ item }: { item: GalleryItem }) {
+function GalleryMedia({ item, onOpen }: { item: GalleryItem; onOpen?: () => void }) {
   if (item._type === "imageItem" && item.image?.asset?.url) {
     return (
       <figure className="relative w-full bg-cream border border-dark-text/10">
-        <div className="relative w-full aspect-[4/3]">
+        <button
+          type="button"
+          onClick={onOpen}
+          className="relative block w-full aspect-[4/3] cursor-zoom-in group"
+          aria-label={item.caption ? `View ${item.caption} at full size` : "View image at full size"}
+        >
           <Image src={item.image.asset.url} alt={item.caption || "Gallery image"} fill
-            className="object-cover" sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw" />
-        </div>
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw" />
+        </button>
         {item.caption && <figcaption className="px-3 py-2 text-xs text-dark-text/65 tracking-wide">{item.caption}</figcaption>}
       </figure>
     );
@@ -37,6 +45,44 @@ function GalleryMedia({ item }: { item: GalleryItem }) {
     );
   }
   return null;
+}
+
+function GalleryGrid({ items }: { items: GalleryItem[] }) {
+  const [zoomed, setZoomed] = useState<number | null>(null);
+
+  // Only images open in the viewer, so the indices it pages through have to be
+  // those of the images alone, not of the mixed image and video list.
+  type ImageItem = Extract<GalleryItem, { _type: "imageItem" }>;
+  const images = items.filter(
+    (it): it is ImageItem =>
+      it._type === "imageItem" && Boolean(it.image?.asset?.url)
+  );
+  const urls = images.map((it) => it.image.asset.url);
+
+  return (
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {items.map((item, i) => (
+          <GalleryMedia
+            key={item._key ?? i}
+            item={item}
+            onOpen={() => {
+              const at = images.findIndex((img) => img === item);
+              if (at !== -1) setZoomed(at);
+            }}
+          />
+        ))}
+      </div>
+      <Lightbox
+        images={urls}
+        index={zoomed}
+        onClose={() => setZoomed(null)}
+        onIndexChange={setZoomed}
+        alt={(i) => images[i]?.caption || `Gallery image ${i + 1}`}
+        caption={(i) => images[i]?.caption}
+      />
+    </>
+  );
 }
 
 export default function GalleryClient({ groups }: { groups: GalleryGroup[] }) {
@@ -69,11 +115,7 @@ export default function GalleryClient({ groups }: { groups: GalleryGroup[] }) {
                 <h2 className="font-heading text-2xl md:text-4xl font-bold text-dark-text mb-2">{group.name}</h2>
                 <div className="h-px w-16 bg-gold mb-8" />
                 {group.items && group.items.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {group.items.map((item, i) => (
-                      <GalleryMedia key={item._key ?? i} item={item} />
-                    ))}
-                  </div>
+                  <GalleryGrid items={group.items} />
                 ) : (
                   <p className="text-dark-text/40 text-sm italic">No items in this group yet.</p>
                 )}
