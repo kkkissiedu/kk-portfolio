@@ -29,17 +29,23 @@ function ToolColumn({ title, items }: { title: string; items: ToolkitItemResolve
       <ul className="grid grid-cols-2 gap-3">
         {items.map((item, i) => (
           <li key={`${item.name}-${i}`}
-            className="toolkit-item flex flex-col items-center gap-2 p-4 bg-white border border-dark-text/10 hover:border-gold transition-colors duration-200">
-            {item.icon?.asset?.url ? (
+            className={`toolkit-item flex flex-col items-center justify-center gap-2 bg-white border border-dark-text/10 hover:border-gold transition-colors duration-200 ${
+              item.icon?.asset?.url ? "p-4" : "px-3 py-5 min-h-[74px]"
+            }`}>
+            {/* No initials placeholder when an item has no logo: too many of
+                these names share their first two letters (Autodesk Revit and
+                AutoCAD both gave AU, Adobe Photoshop and Adobe Illustrator both
+                gave AD), so the badge read as a bug. Name-only is deliberate. */}
+            {item.icon?.asset?.url && (
               <div className="relative w-10 h-10 shrink-0">
                 <Image src={item.icon.asset.url} alt={item.name} fill className="object-contain" sizes="40px" />
               </div>
-            ) : (
-              <div className="w-10 h-10 bg-gold/10 flex items-center justify-center text-gold text-xs font-bold shrink-0">
-                {item.name.slice(0, 2).toUpperCase()}
-              </div>
             )}
-            <p className="text-xs text-dark-text/80 text-center leading-tight">{item.name}</p>
+            <p className={`text-center leading-tight ${
+              item.icon?.asset?.url
+                ? "text-xs text-dark-text/80"
+                : "text-sm text-dark-text/85 tracking-wide"
+            }`}>{item.name}</p>
           </li>
         ))}
       </ul>
