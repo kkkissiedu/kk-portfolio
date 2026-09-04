@@ -12,10 +12,10 @@
 //   column 3  tools listed on the Anthracite 3d-design projects, matching the
 //             CV's 3D design line
 //
-// Icons are left unset. Most of these products have no permissively licensed
-// mark available, so a partial set would look inconsistent; the component
-// already falls back to a lettered badge. Add logos per item in Studio if you
-// want them later.
+// Icons are not set here. The component maps these exact names to logo files
+// in public/toolkit (see TOOL_LOGOS in app/components/Toolkit.tsx), so a name
+// changed here must be changed there too. An icon uploaded per item in Studio
+// still overrides both.
 //
 // Run: npx sanity exec scripts/populate-toolkit.ts --with-user-token
 import { getCliClient } from "sanity/cli";
@@ -43,7 +43,7 @@ const COLUMN_2 = [
   "NVIDIA Jetson",
   "TensorRT",
   "ONNX Runtime",
-  "NumPy & SciPy",
+  "NumPy",
   "Optuna",
   "Weights & Biases",
 ];
