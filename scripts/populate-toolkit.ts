@@ -5,8 +5,9 @@
 // Every entry below is drawn from work already on the two sites or from the
 // CV's software section, not invented:
 //   column 1  tools listed on the Anthracite architectural-structural projects
-//             (revit, autocad, protastructure, tekla, lumion) plus ABAQUS,
-//             Fusion and Grasshopper from the CV
+//             (revit, autocad, protastructure, tekla, lumion), ABAQUS, Fusion
+//             and Grasshopper from the CV, and ETABS, SAP2000 and Midas from
+//             the previous portfolio's own toolkit section
 //   column 2  tools listed on the portfolio ML projects, plus the robotics and
 //             edge deployment line of the CV
 //   column 3  tools listed on the Anthracite 3d-design projects, matching the
@@ -25,8 +26,11 @@ const client = getCliClient({ apiVersion: "2025-08-15" });
 const COLUMN_1 = [
   "Autodesk Revit",
   "AutoCAD",
-  "ProtaStructure",
   "Tekla Structures",
+  "ProtaStructure",
+  "ETABS",
+  "SAP2000",
+  "Midas",
   "ABAQUS",
   "Autodesk Fusion",
   "Grasshopper (Rhino)",
