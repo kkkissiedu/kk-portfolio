@@ -17,8 +17,11 @@ gsap.registerPlugin(ScrollTrigger);
 const TOOL_LOGOS: Record<string, string> = {
   "Autodesk Revit": "autodesk-revit.png",
   AutoCAD: "autocad.png",
-  ProtaStructure: "protastructure.png",
   "Tekla Structures": "tekla-structures.png",
+  ProtaStructure: "protastructure.png",
+  ETABS: "etabs.png",
+  SAP2000: "sap2000.png",
+  Midas: "midas.png",
   ABAQUS: "abaqus.png",
   "Autodesk Fusion": "autodesk-fusion.svg",
   "Grasshopper (Rhino)": "grasshopper-rhino.png",
@@ -66,27 +69,32 @@ function ToolColumn({ title, items }: { title: string; items: ToolkitItemResolve
   if (!items || items.length === 0) return null;
   return (
     <div>
-      <h3 className="font-heading text-xl md:text-2xl font-bold text-gold mb-6 text-center">{title}</h3>
-      <ul className="grid grid-cols-2 gap-3">
+      <h3 className="font-heading text-xl md:text-2xl font-bold text-gold mb-3 text-center">{title}</h3>
+      <div className="h-px w-12 bg-gold/40 mx-auto mb-8" />
+      <ul className="grid grid-cols-2 gap-x-4 gap-y-8">
         {items.map((item, i) => {
           const logo = logoFor(item);
           return (
             <li key={`${item.name}-${i}`}
-              className="toolkit-item flex flex-col items-center justify-center gap-2 p-4 min-h-[104px] bg-white border border-dark-text/10 hover:border-gold transition-colors duration-200">
-              {/* No initials placeholder for the few tools with no logo: too
-                  many of these names share their first two letters (Autodesk
-                  Revit and AutoCAD both gave AU), so the badge read as a bug. */}
-              {logo && (
-                <div className="relative w-10 h-10 shrink-0">
-                  {/* Plain img: these are local, already-sized assets, and one
-                      is an SVG, which next/image will not optimise without
-                      dangerouslyAllowSVG. */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={logo} alt="" aria-hidden="true"
-                    className="w-full h-full object-contain" loading="lazy" />
-                </div>
-              )}
-              <p className="text-xs text-dark-text/80 text-center leading-tight">{item.name}</p>
+              className="toolkit-item group flex flex-col items-center gap-3 transition-transform duration-300 ease-out hover:-translate-y-1">
+              {/* Fixed-height slot rather than a fixed square: several of these
+                  marks are wide wordmarks (Tekla, SAP2000, XGBoost) and a square
+                  box shrank them to a fraction of the size of the round ones.
+                  The slot is always rendered, logo or not, so the names stay on
+                  one baseline across the row. */}
+              <div className="h-12 w-full flex items-center justify-center">
+                {logo && (
+                  /* Plain img: these are local, already-sized assets, and seven
+                     are SVG, which next/image will not optimise without
+                     dangerouslyAllowSVG. */
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={logo} alt="" aria-hidden="true" loading="lazy"
+                    className="max-h-11 max-w-[62%] object-contain transition-transform duration-300 ease-out group-hover:scale-110" />
+                )}
+              </div>
+              <p className="text-[11px] md:text-xs text-dark-text/70 text-center leading-snug tracking-wide transition-colors duration-300 group-hover:text-gold">
+                {item.name}
+              </p>
             </li>
           );
         })}
