@@ -54,12 +54,18 @@ export default function Navbar() {
 
   const handleLinkClick = () => setMenuOpen(false);
 
+  // The transparent bar only works over the home page hero, which is dark.
+  // Every other route opens on a light background, where cream-on-cream left
+  // the links invisible until hovered, so those pages get the solid bar from
+  // the start rather than waiting for a scroll.
+  const solid = scrolled || pathname !== "/";
+
   return (
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? "bg-anthracite/80 backdrop-blur-sm border-b border-gold/10 py-3"
+          solid
+            ? "bg-anthracite/95 backdrop-blur-sm border-b border-gold/10 py-3"
             : "bg-transparent py-5"
         }`}
       >
