@@ -61,6 +61,7 @@ const COLUMN_3 = [
   "Unity",
   "Adobe Photoshop",
   "Adobe Illustrator",
+  "Adobe Premiere Pro",
 ];
 
 const key = (n: number) =>
