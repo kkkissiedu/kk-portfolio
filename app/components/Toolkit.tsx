@@ -9,11 +9,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Logos live in public/toolkit. Most are the files the previous portfolio
 // shipped; the rest are simple-icons marks (CC0, painted with each brand's
-// hex) plus XGBoost's own project logo. Trademarks belong to their owners and
-// are used here only to identify tools actually used.
+// hex), XGBoost's own project logo, and the Fusion and Lumion application
+// icons extracted from the installed builds, since neither publishes a
+// usable mark. Trademarks belong to their owners and are used here only to
+// identify tools actually used.
 //
-// A per-item icon uploaded in Studio still wins over this map. Anything with
-// no logo available (Lumion, TensorRT) renders as a name-only tile.
+// A per-item icon uploaded in Studio still wins over this map. TensorRT has
+// no distinct mark of its own, so it renders as a name-only tile.
 const TOOL_LOGOS: Record<string, string> = {
   "Autodesk Revit": "autodesk-revit.png",
   AutoCAD: "autocad.png",
@@ -23,8 +25,9 @@ const TOOL_LOGOS: Record<string, string> = {
   SAP2000: "sap2000.png",
   Midas: "midas.png",
   ABAQUS: "abaqus.png",
-  "Autodesk Fusion": "autodesk-fusion.svg",
+  "Autodesk Fusion": "autodesk-fusion.png",
   "Grasshopper (Rhino)": "grasshopper-rhino.png",
+  Lumion: "lumion.png",
   Python: "python.png",
   PyTorch: "pytorch.png",
   "scikit-learn": "scikit-learn.svg",
