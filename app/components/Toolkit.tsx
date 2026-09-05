@@ -44,6 +44,7 @@ const TOOL_LOGOS: Record<string, string> = {
   Unity: "unity.png",
   "Adobe Photoshop": "adobe-photoshop.png",
   "Adobe Illustrator": "adobe-illustrator.png",
+  "Adobe Premiere Pro": "adobe-premiere-pro.png",
 };
 
 function logoFor(item: ToolkitItemResolved): string | null {
